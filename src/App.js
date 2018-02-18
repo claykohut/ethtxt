@@ -74,8 +74,6 @@ class App extends Component {
 
     simpleStorage.deployed().then((instance) => {
       simpleStorageInstance = instance
-
-      console.log('testing... ', simpleStorageInstance.get())
       return simpleStorageInstance.get();
     })
     .then((result) => {
