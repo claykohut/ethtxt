@@ -39,7 +39,7 @@ class FeaturedTextContainer extends Component {
           <Button
             text="Change this text for 0.1 ETH"
             onClick={() => {
-              this.props.changeFeaturedText(inputText);
+              this.props.changeFeaturedText(inputText)
             }}
           />
         </div>

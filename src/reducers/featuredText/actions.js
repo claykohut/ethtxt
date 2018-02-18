@@ -5,6 +5,22 @@ export const SET_FEATURED_TEXT = 'SET_FEATURED_TEXT';
 const contract = require('truffle-contract')
 const simpleStorage = contract(EthTxtContract)
 
+let textEventWatch = null;
+
+export function setEventWatch(contractInstance) {
+  return (dispatch, getState) => {
+    if(!textEventWatch) {
+      textEventWatch = true;
+      contractInstance.NewText({}, {fromBlock: "latest", toBlock: "pending"})
+        .watch((error, data) => {
+          if(data.args && data.args.text) {
+            dispatch(setFeaturedText(data.args.text));
+          }
+        })
+    }
+  }
+}
+
 export function getFeaturedText() {
   return (dispatch, getState) => {
     const { web3 } = getState();
@@ -14,6 +30,9 @@ export function getFeaturedText() {
 
     simpleStorage.deployed().then((instance) => {
       simpleStorageInstance = instance
+      if(!textEventWatch){
+        dispatch(setEventWatch(simpleStorageInstance));
+      }
       return simpleStorageInstance.get();
     })
     .then((result) => {
@@ -24,7 +43,6 @@ export function getFeaturedText() {
 }
 
 export function setFeaturedText(text) {
-  console.log('updating featured text... ', text)
   return {
     type: SET_FEATURED_TEXT,
     payload: {
@@ -45,7 +63,6 @@ export function changeFeaturedText(text) {
           simpleStorageInstance = instance
           return simpleStorageInstance.set(text, {from: accounts[0]})
         }).then((result) => {
-          // Get the value from the contract to prove it worked.
           return dispatch(getFeaturedText());
         })
       })

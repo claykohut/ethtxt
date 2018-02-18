@@ -1,4 +1,3 @@
-import EthTxtContract from 'contracts/EthTxt.json'
 import getWeb3 from 'utils/getWeb3'
 
 import { getFeaturedText } from 'reducers/featuredText/actions';
