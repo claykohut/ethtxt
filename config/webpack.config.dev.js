@@ -9,8 +9,6 @@ var paths = require('./paths');
 
 const { resolve } = require('path');
 
-console.log('paths?? ', paths.nodePaths)
-
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 var publicPath = '/';
@@ -72,6 +70,7 @@ module.exports = {
     fallback: paths.nodePaths,
     modulesDirectories: [
       resolve(__dirname, '../src'),
+      resolve(__dirname, '../build'),
       resolve(__dirname, '../node_modules')
     ],
     // These are the reasonable defaults supported by the Node ecosystem.

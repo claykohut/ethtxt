@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import styles from './TextBoxStyle.css';
 
+import { getFeaturedText } from 'reducers/featuredText/actions';
+
 class TextBox extends Component {
   render() {
-    const { text } = this.props;
+    const { featuredText } = this.props;
     return (
       <div className={styles.featuredTextBox}>
-        <div className={styles.featuredText}>{ text }</div>
+        <div className={styles.featuredText}>{ featuredText.text }</div>
       </div>
     )
   }
 }
 
-export default TextBox;
+const mapStateToProps = ({ featuredText }) => ({
+  featuredText,
+});
+
+export default connect(mapStateToProps, { getFeaturedText })(TextBox);

@@ -7,10 +7,14 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import reducer from './reducers';
 
+import { initWeb3 } from 'reducers/web3/actions';
+
 const store = createStore(reducer, compose(
   applyMiddleware(thunk),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 ));
+
+store.dispatch(initWeb3())
 
 ReactDOM.render(
   <Provider store={store}>
