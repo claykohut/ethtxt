@@ -2,6 +2,11 @@
   border: 6px solid #4462CC;
   max-width: 720px;
   width: 80vw;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .featuredText {

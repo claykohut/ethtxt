@@ -54,7 +54,8 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.7",
-    "react-spinner": "^0.2.7",
+    "react-spinkit": "^3.0.0",
+    "react-spinners": "^0.2.6",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"
   },
