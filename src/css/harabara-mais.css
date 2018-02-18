@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'harabara_mais';
+    src: url('../fonts/HarabaraMais/harabara_mais-webfont.woff2') format('woff2'),
+         url('../fonts/HarabaraMais/harabara_mais-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

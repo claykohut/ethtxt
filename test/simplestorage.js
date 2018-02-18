@@ -1,16 +1,16 @@
-var SimpleStorage = artifacts.require("./SimpleStorage.sol");
+var EthTxt = artifacts.require("./EthTxt.sol");
 
-contract('SimpleStorage', function(accounts) {
+contract('EthTxt', function(accounts) {
 
-  it("...should store the value 89.", function() {
-    return SimpleStorage.deployed().then(function(instance) {
+  it("...should store the value 'test bro'.", function() {
+    return EthTxt.deployed().then(function(instance) {
       simpleStorageInstance = instance;
 
-      return simpleStorageInstance.set(89, {from: accounts[0]});
+      return simpleStorageInstance.set('test bro', {from: accounts[0]});
     }).then(function() {
       return simpleStorageInstance.get.call();
     }).then(function(storedData) {
-      assert.equal(storedData, 89, "The value 89 was not stored.");
+      assert.equal(storedData, 'test bro', "The value 'test bro' was not stored.");
     });
   });
 
