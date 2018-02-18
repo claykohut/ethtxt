@@ -24,6 +24,7 @@ export function getFeaturedText() {
 }
 
 export function setFeaturedText(text) {
+  console.log('updating featured text... ', text)
   return {
     type: SET_FEATURED_TEXT,
     payload: {
@@ -32,20 +33,21 @@ export function setFeaturedText(text) {
   };
 }
 
-// this.state.web3.eth.getAccounts((error, accounts) => {
-//   simpleStorage.deployed().then((instance) => {
-//     simpleStorageInstance = instance
-//   //
-//     // Stores a given value, 5 by default.
-//     return simpleStorageInstance.set('bro', {from: accounts[0]})
-//   }).then((result) => {
-//     // Get the value from the contract to prove it worked.
-//     console.log('value is?? ', simpleStorageInstance.get.call(accounts[0]))
-//     return simpleStorageInstance.get.call(accounts[0])
-//   })
-//   .then((result) => {
-//     // Update state with the result.
-//     console.log('got result? ', result)
-//     return this.setState({ storageValue: result })
-//   })
-// })
+export function changeFeaturedText(text) {
+  return (dispatch, getState) => {
+      const { web3 } = getState();
+
+      simpleStorage.setProvider(web3.currentProvider)
+      var simpleStorageInstance;
+
+      web3.eth.getAccounts((error, accounts) => {
+        simpleStorage.deployed().then((instance) => {
+          simpleStorageInstance = instance
+          return simpleStorageInstance.set(text, {from: accounts[0]})
+        }).then((result) => {
+          // Get the value from the contract to prove it worked.
+          return dispatch(getFeaturedText());
+        })
+      })
+  }
+}

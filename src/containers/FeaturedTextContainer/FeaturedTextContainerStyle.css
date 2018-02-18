@@ -1,0 +1,16 @@
+.inputWrap {
+  display: flex;
+  margin-top: 20px;
+}
+
+.input {
+  display: flex;
+  flex: 1;
+  padding: 0 20px;
+  border: 5px solid #4461cd;
+  border-right: none;
+  font-family: 'Lato';
+  color: #4461cd;
+  font-size: 16px;
+  outline: none;
+}
