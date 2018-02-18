@@ -1,0 +1,19 @@
+.button {
+  font-size: 16px;
+  background: #4462CC;
+  color: #F1F4F8;
+  float: right;
+  padding: 15px 20px;
+  margin-top: 20px;
+  font-weight: 300;
+  cursor: pointer;
+  user-select: none;
+}
+
+.button:hover {
+  opacity: 0.95;
+}
+
+.button:active {
+  opacity: 0.9;
+}

@@ -9,6 +9,7 @@ import './App.css'
 
 import Logo from './components/Logo';
 import TextBox from './components/TextBox';
+import Button from './components/Button';
 
 class App extends Component {
   constructor(props) {
@@ -90,6 +91,12 @@ class App extends Component {
         <Logo />
         <TextBox
           text={this.state.storageValue}
+        />
+        <Button
+          text="Change this text for 0.1 ETH"
+          onClick={() => {
+            console.log('clicking...')
+          }}
         />
       </div>
     );

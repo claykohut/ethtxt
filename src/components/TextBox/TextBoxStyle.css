@@ -1,11 +1,11 @@
 .featuredTextBox {
-  border: 6px solid #4561CB;
+  border: 6px solid #4462CC;
   max-width: 720px;
   width: 80vw;
 }
 
 .featuredText {
-  color: #4561CB;
+  color: #4462CC;
   font-family: 'Lato', sans-serif;
   padding: 80px 60px;
   font-size: 50px;
