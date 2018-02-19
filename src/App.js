@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
+import { Switch, Route } from 'react-router-dom'
+
 
 import './css/harabara-mais.css'
 import './index.css';
 
 import './App.css'
 
-import Logo from './components/Logo';
-
+import Home from 'routes/Home';
 import FeaturedTextContainer from 'containers/FeaturedTextContainer';
 
 class App extends Component {
@@ -22,8 +23,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Logo />
-        <FeaturedTextContainer />
+        <Switch>
+          <Route exact path='/' component={Home}/>
+          <Route exact path='/text' component={FeaturedTextContainer}/>
+          {/* <Route path='/roster' component={Roster}/> */}
+        </Switch>
       </div>
     );
   }

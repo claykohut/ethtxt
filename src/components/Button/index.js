@@ -6,13 +6,19 @@ class Button extends Component {
 
   static defaultProps = {
       text: '',
-      onClick: () => {}
+      onClick: () => {},
+      customStyle: '',
   }
 
   render() {
-    const { text, onClick } = this.props;
+    const { text, onClick, customStyle } = this.props;
     return (
-      <div className={styles.button} onClick={onClick}>{ text }</div>
+      <div
+        className={`${styles.button} ${customStyle}`}
+        onClick={onClick}
+      >
+        { text }
+      </div>
     )
   }
 }
