@@ -4,6 +4,7 @@ import EthTxtContract from 'contracts/EthTxt.json'
 import Web3 from 'web3'
 import { ETH_PROVIDER_URL } from 'constants';
 // used for stuff metamask isnt good at, like filtering events
+
 const localProvider = new Web3.providers.HttpProvider(ETH_PROVIDER_URL)
 
 export const SET_FEATURED_TEXT = 'SET_FEATURED_TEXT';
@@ -27,6 +28,7 @@ export function getReceiptData({ tx, blockNumber }) {
           toBlock: blockNumber
         });
         allEvents.get((err, res) => {
+          console.log('in all events get... ', err,  'res ', res )
           if(err) return reject(err);
           if(res.length) {
             const foundEvent = res.find((item) => {

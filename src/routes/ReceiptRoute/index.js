@@ -28,6 +28,7 @@ class ReceiptRoute extends Component {
     console.log('in get tx receipt..')
     const { web3, match: { params = {} } } = this.props;
     web3.eth.getTransactionReceipt(params.tx, (err, data) => {
+      console.log('response from tx receipt? ', err, ' data ', data)
       if(data) {
         clearInterval(this.intervalId);
         this.setState({ blockNumber: data.blockNumber });
