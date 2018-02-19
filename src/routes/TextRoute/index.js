@@ -16,13 +16,17 @@ class TextRoute extends Component {
   }
 
   componentDidMount() {
-    const { match: { params: { id = 0 }} } = this.props;
+    const { match: { params: { code = '0' }} } = this.props;
     setTimeout(() => {
-      this.props.getArchivedText(id)
-        .then((text) => {
+      this.props.getArchivedText(code)
+        .then((text = '404') => {
+          if(!text) {
+            text = '404';
+          }
           this.setState({ text });
         })
         .catch((error) => {
+          console.log('got error? ', error)
           this.setState({ text: '404' })
         })
     })

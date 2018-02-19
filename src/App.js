@@ -27,7 +27,7 @@ class App extends Component {
         <Switch>
           <Route exact path='/' component={HomeRoute}/>
           <Route exact path='/receipt/:tx' component={ReceiptRoute}/>
-          <Route exact path='/text/:id' component={TextRoute}/>
+          <Route exact path='/:code' component={TextRoute}/>
         </Switch>
       </div>
     );

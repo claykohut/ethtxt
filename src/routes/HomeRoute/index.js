@@ -24,7 +24,9 @@ class HomeRoute extends Component {
 
   doArchiveText = () => {
     const { inputText } = this.state;
-
+    if(inputText.length === 0) {
+      return;
+    }
     this.props.archiveText(inputText)
       .then((transactionHash) => {
         this.props.history.push(`/receipt/${transactionHash}`);

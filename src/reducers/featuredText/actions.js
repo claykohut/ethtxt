@@ -3,8 +3,8 @@ import EthTxtContract from 'contracts/EthTxt.json'
 // local web3, not metamask
 import Web3 from 'web3'
 import { ETH_PROVIDER_URL } from 'constants';
+// used for stuff metamask isnt good at, like filtering events
 const localProvider = new Web3.providers.HttpProvider(ETH_PROVIDER_URL)
-
 
 export const SET_FEATURED_TEXT = 'SET_FEATURED_TEXT';
 export const SUBMIT_TEXT_START = 'SUBMIT_TEXT_START';
@@ -44,7 +44,7 @@ export function getReceiptData({ tx, blockNumber }) {
   }
 }
 
-export function getArchivedText(textId) {
+export function getArchivedText(code) {
   return (dispatch, getState) => {
     const { web3 } = getState();
 
@@ -54,7 +54,7 @@ export function getArchivedText(textId) {
     return new Promise((resolve, reject) => {
         simpleStorage.deployed().then((instance) => {
           simpleStorageInstance = instance
-          return simpleStorageInstance.getText(textId || 0)
+          return simpleStorageInstance.getText(code || '0')
         })
         .then((result) => {
           resolve(result);

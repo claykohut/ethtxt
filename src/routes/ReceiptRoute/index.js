@@ -42,8 +42,9 @@ class ReceiptRoute extends Component {
     this.props.getReceiptData({ blockNumber, tx: params.tx })
       .then((receipt) => {
         clearInterval(this.intervalId);
-        const { args: { text, textId } } = receipt;
-        this.props.history.push(`/text/${textId.toNumber()}`);
+        const { args: { text, code } } = receipt;
+        console.log('got receipt?? ', receipt)
+        this.props.history.push(`/${code}`);
       })
   }
 
