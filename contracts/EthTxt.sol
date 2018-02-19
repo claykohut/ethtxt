@@ -25,10 +25,9 @@ contract EthTxt {
     require(bytes(_text).length != 0);
 
     var code = _generateShortLink();
-    if(getText(code)) {
-      // if text exists with code, cancel transaction
-      throw;
-    }
+    // make sure code doesnt exist in map
+    require(bytes(getText(code)).length == 0);
+
     // add text to map
     texts[code] = StoredText(_text, msg.sender);
     NewText(_text, code);
