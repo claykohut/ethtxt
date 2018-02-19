@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getFeaturedText, changeFeaturedText } from 'reducers/featuredText/actions';
+import { getFeaturedText, archiveText } from 'reducers/featuredText/actions';
 
 import TextBox from 'components/TextBox';
 import Button from 'components/Button';
@@ -37,9 +37,9 @@ class FeaturedTextContainer extends Component {
             onChange={(event) => this.onChangeText(event.target.value)}
           />
           <Button
-            text="Change this text for 0.1 ETH"
+            text="Archive this Text"
             onClick={() => {
-              this.props.changeFeaturedText(inputText)
+              this.props.archiveText(inputText)
             }}
           />
         </div>
@@ -52,4 +52,4 @@ const mapStateToProps = ({ featuredText }) => ({
   featuredText,
 });
 
-export default connect(mapStateToProps, { getFeaturedText, changeFeaturedText })(FeaturedTextContainer);
+export default connect(mapStateToProps, { getFeaturedText, archiveText })(FeaturedTextContainer);
