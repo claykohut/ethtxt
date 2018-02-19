@@ -1,4 +1,5 @@
 .button {
+  position: relative;
   font-size: 16px;
   background: #4462CC;
   color: #F1F4F8;
@@ -14,4 +15,20 @@
 
 .button:active {
   opacity: 0.9;
+}
+
+.buttonLoading {
+  opacity: 1;
+  pointer-events: none;
+}
+
+.hideText {
+  visibility: hidden;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }

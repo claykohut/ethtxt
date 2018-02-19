@@ -1,6 +1,8 @@
 import EthTxtContract from 'contracts/EthTxt.json'
 
 export const SET_FEATURED_TEXT = 'SET_FEATURED_TEXT';
+export const SUBMIT_TEXT_START = 'SUBMIT_TEXT_START';
+export const SUBMIT_TEXT_END = 'SUBMIT_TEXT_END';
 
 const contract = require('truffle-contract')
 const simpleStorage = contract(EthTxtContract)
@@ -13,17 +15,15 @@ export function getArchivedText(textId) {
     var simpleStorageInstance;
 
     return new Promise((resolve, reject) => {
-
         simpleStorage.deployed().then((instance) => {
           simpleStorageInstance = instance
           return simpleStorageInstance.getText(textId || 0)
         })
         .then((result) => {
-          console.log('result?? ', result)
           resolve(result);
         })
         .catch((error) => {
-          reject(error)
+          reject(error);
         })
     })
 
@@ -47,16 +47,21 @@ export function archiveText(text) {
       var simpleStorageInstance;
 
       return new Promise((resolve, reject) => {
-
         web3.eth.getAccounts((error, accounts) => {
           simpleStorage.deployed().then((instance) => {
             simpleStorageInstance = instance
+            console.log('in submit...')
+            dispatch({ type: SUBMIT_TEXT_START });
             return simpleStorageInstance.archiveText(text, {from: accounts[0]})
-          }).then((result) => {
+          })
+          .then((result) => {
             resolve(result);
           })
           .catch((error) => {
             reject(error)
+          })
+          .finally(() => {
+            dispatch({ type: SUBMIT_TEXT_END });
           })
         })
 

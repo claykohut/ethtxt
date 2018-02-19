@@ -11,7 +11,8 @@ class HomeRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputText: ''
+      inputText: '',
+      doingArchive: false,
     }
   }
 
@@ -21,8 +22,20 @@ class HomeRoute extends Component {
     })
   }
 
-  render() {
+  doArchiveText = () => {
     const { inputText } = this.state;
+
+    this.props.archiveText(inputText)
+      .then(({ logs = []}) => {
+        const { args, transactionHash } = logs[0];
+        console.log('args? ', args, ' id: ', args.textId.toNumber());
+        console.log('tx? ', transactionHash);
+      })
+  }
+
+  render() {
+    const { inputText, doingArchive } = this.state;
+    const { featuredText } = this.props;
     return (
       <div>
         <Logo />
@@ -35,10 +48,9 @@ class HomeRoute extends Component {
           />
           <Button
             text="Archive this Text"
-            onClick={() => {
-              this.props.archiveText(inputText)
-            }}
+            onClick={this.doArchiveText}
             customStyle={styles.button}
+            loading={featuredText.submitting}
           />
         </div>
       </div>
@@ -46,8 +58,10 @@ class HomeRoute extends Component {
   }
 }
 
-const mapStateToProps = () => {
-  return {}
+const mapStateToProps = (state) => {
+  return {
+    featuredText: state.featuredText
+  }
 }
 
 export default connect(mapStateToProps, { archiveText })(HomeRoute);
