@@ -26,11 +26,12 @@ class HomeRoute extends Component {
     const { inputText } = this.state;
 
     this.props.archiveText(inputText)
-      .then(({ logs = []}) => {
-        const { args, transactionHash } = logs[0];
-        console.log('args? ', args, ' id: ', args.textId.toNumber());
-        console.log('tx? ', transactionHash);
+      .then((response) => {
+        console.log('response? ', response)
       })
+      // .then((transactionHash) => {
+      //   this.props.history.push(`/receipt/${transactionHash}`);
+      // })
   }
 
   render() {

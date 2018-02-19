@@ -8,6 +8,7 @@ import './index.css';
 import './App.css'
 
 import HomeRoute from 'routes/HomeRoute';
+import ReceiptRoute from 'routes/ReceiptRoute';
 import TextRoute from 'routes/TextRoute';
 
 class App extends Component {
@@ -25,6 +26,7 @@ class App extends Component {
       <div className="App">
         <Switch>
           <Route exact path='/' component={HomeRoute}/>
+          <Route exact path='/receipt/:tx' component={ReceiptRoute}/>
           <Route exact path='/text/:id' component={TextRoute}/>
         </Switch>
       </div>

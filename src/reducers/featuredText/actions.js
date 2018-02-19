@@ -7,6 +7,31 @@ export const SUBMIT_TEXT_END = 'SUBMIT_TEXT_END';
 const contract = require('truffle-contract')
 const simpleStorage = contract(EthTxtContract)
 
+export function getReceiptData({ tx, blockNum }) {
+  return (dispatch, getState) => {
+    const { web3 } = getState();
+    simpleStorage.setProvider(web3.currentProvider)
+    var simpleStorageInstance;
+
+    simpleStorage.deployed().then((instance) => {
+      simpleStorageInstance = instance
+      console.log('in get receipt data... ', tx)
+      console.log('contract?? ', instance)
+      const allEvents = instance.allEvents({
+        fromBlock: blockNum,
+        toBlock: blockNum
+      });
+      allEvents.watch((err, res) => {
+        if(err) return;
+        if(tx === res.transactionHash) {
+          console.log('found event! ', res)
+        }
+      });
+    })
+
+  }
+}
+
 export function getArchivedText(textId) {
   return (dispatch, getState) => {
     const { web3 } = getState();
@@ -50,8 +75,9 @@ export function archiveText(text) {
         web3.eth.getAccounts((error, accounts) => {
           simpleStorage.deployed().then((instance) => {
             simpleStorageInstance = instance
-            console.log('in submit...')
+            console.log('in submit... ', instance)
             dispatch({ type: SUBMIT_TEXT_START });
+            // return simpleStorageInstance.archiveText.sendTransaction(text, {from: accounts[0]});
             return simpleStorageInstance.archiveText(text, {from: accounts[0]})
           })
           .then((result) => {
