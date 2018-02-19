@@ -1,5 +1,11 @@
 import EthTxtContract from 'contracts/EthTxt.json'
 
+// local web3, not metamask
+import Web3 from 'web3'
+import { ETH_PROVIDER_URL } from 'constants';
+const localProvider = new Web3.providers.HttpProvider(ETH_PROVIDER_URL)
+
+
 export const SET_FEATURED_TEXT = 'SET_FEATURED_TEXT';
 export const SUBMIT_TEXT_START = 'SUBMIT_TEXT_START';
 export const SUBMIT_TEXT_END = 'SUBMIT_TEXT_END';
@@ -7,26 +13,32 @@ export const SUBMIT_TEXT_END = 'SUBMIT_TEXT_END';
 const contract = require('truffle-contract')
 const simpleStorage = contract(EthTxtContract)
 
-export function getReceiptData({ tx, blockNum }) {
+export function getReceiptData({ tx, blockNumber }) {
   return (dispatch, getState) => {
     const { web3 } = getState();
-    simpleStorage.setProvider(web3.currentProvider)
+    simpleStorage.setProvider(localProvider)
     var simpleStorageInstance;
 
-    simpleStorage.deployed().then((instance) => {
-      simpleStorageInstance = instance
-      console.log('in get receipt data... ', tx)
-      console.log('contract?? ', instance)
-      const allEvents = instance.allEvents({
-        fromBlock: blockNum,
-        toBlock: blockNum
-      });
-      allEvents.watch((err, res) => {
-        if(err) return;
-        if(tx === res.transactionHash) {
-          console.log('found event! ', res)
-        }
-      });
+    return new Promise((resolve, reject) => {
+      simpleStorage.deployed().then((instance) => {
+        simpleStorageInstance = instance
+        const allEvents = instance.allEvents({
+          fromBlock: blockNumber,
+          toBlock: blockNumber
+        });
+        allEvents.get((err, res) => {
+          if(err) return reject(err);
+          if(res.length) {
+            const foundEvent = res.find((item) => {
+              return item.transactionHash === tx;
+            })
+            if(foundEvent) {
+              return resolve(foundEvent);
+            }
+          }
+          return reject();
+        });
+      })
     })
 
   }
@@ -77,8 +89,11 @@ export function archiveText(text) {
             simpleStorageInstance = instance
             console.log('in submit... ', instance)
             dispatch({ type: SUBMIT_TEXT_START });
-            // return simpleStorageInstance.archiveText.sendTransaction(text, {from: accounts[0]});
-            return simpleStorageInstance.archiveText(text, {from: accounts[0]})
+            // send transaciton recturns immediately but needs to poll for receipt when tx is mined
+            return simpleStorageInstance.archiveText.sendTransaction(text, {from: accounts[0]});
+            // calling method directly returns with receiot data but you have to wait until tx is mined
+            // this is the simpler approach but makes users wait a long time on a spinner
+            //return simpleStorageInstance.archiveText(text, {from: accounts[0]})
           })
           .then((result) => {
             resolve(result);
