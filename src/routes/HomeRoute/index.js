@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getFeaturedText, archiveText } from 'reducers/featuredText/actions';
+import { archiveText } from 'reducers/featuredText/actions';
 
 import Logo from 'components/Logo';
 import Button from 'components/Button';
 import styles from './HomeStyle.css';
 
-class Home extends Component {
+class HomeRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +26,6 @@ class Home extends Component {
     return (
       <div>
         <Logo />
-
         <div className={styles.inputWrap}>
           <input
             className={styles.input}
@@ -51,4 +50,4 @@ const mapStateToProps = () => {
   return {}
 }
 
-export default connect(mapStateToProps, { archiveText })(Home);
+export default connect(mapStateToProps, { archiveText })(HomeRoute);

@@ -7,8 +7,8 @@ import './index.css';
 
 import './App.css'
 
-import Home from 'routes/Home';
-import FeaturedTextContainer from 'containers/FeaturedTextContainer';
+import HomeRoute from 'routes/HomeRoute';
+import TextRoute from 'routes/TextRoute';
 
 class App extends Component {
   constructor(props) {
@@ -24,9 +24,8 @@ class App extends Component {
     return (
       <div className="App">
         <Switch>
-          <Route exact path='/' component={Home}/>
-          <Route exact path='/text' component={FeaturedTextContainer}/>
-          {/* <Route path='/roster' component={Roster}/> */}
+          <Route exact path='/' component={HomeRoute}/>
+          <Route exact path='/text/:id' component={TextRoute}/>
         </Switch>
       </div>
     );
