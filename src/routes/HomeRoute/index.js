@@ -13,6 +13,7 @@ class HomeRoute extends Component {
     this.state = {
       inputText: '',
       doingArchive: false,
+      showingWeb3Error: false
     }
   }
 
@@ -24,8 +25,14 @@ class HomeRoute extends Component {
 
   doArchiveText = () => {
     const { inputText } = this.state;
+    const { web3 } = this.props;
     if(inputText.length === 0) {
       return;
+    }
+    if(!web3.injected) {
+      return this.setState({
+        showingWeb3Error: true,
+      });
     }
     this.props.archiveText(inputText)
       .then((transactionHash) => {
@@ -34,8 +41,24 @@ class HomeRoute extends Component {
   }
 
   render() {
-    const { inputText, doingArchive } = this.state;
+    const { inputText, doingArchive, showingWeb3Error } = this.state;
     const { featuredText } = this.props;
+
+    if(showingWeb3Error) {
+      return (
+        <div className={styles.errorWrap}>
+          <div className={styles.errorText}>
+            No injected web3 detected. You need to install something like <a className={styles.link} href="https://metamask.io/">metamask</a> to archive text on the Ethereum blockchain.
+          </div>
+          <Button
+            text="Okay"
+            customStyle={styles.errorButton}
+            onClick={() => location.reload()}
+          />
+        </div>
+      )
+    }
+
     return (
       <div>
         <Logo />
@@ -46,12 +69,13 @@ class HomeRoute extends Component {
             value={inputText}
             onChange={(event) => this.onChangeText(event.target.value)}
           />
-          <Button
-            text="Archive this Text"
-            onClick={this.doArchiveText}
-            customStyle={styles.button}
-            loading={featuredText.submitting}
-          />
+          <div className={styles.belowInputWrap}>
+            <Button
+              text="Archive this Text"
+              onClick={this.doArchiveText}
+              customStyle={styles.button}
+            />
+          </div>
         </div>
       </div>
     )
@@ -60,7 +84,8 @@ class HomeRoute extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    featuredText: state.featuredText
+    featuredText: state.featuredText,
+    web3: state.web3,
   }
 }
 

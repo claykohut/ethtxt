@@ -6,6 +6,21 @@
   max-width: 600px;
 }
 
+.errorWrap {
+  display: flex;
+  margin-top: 10px;
+  flex-direction: column;
+  width: 80vw;
+  max-width: 500px;
+  text-align: center;
+}
+
+.link {
+  text-decoration: none;
+  color: #4461cd;
+  font-weight: 700;
+}
+
 .input {
   display: flex;
   flex: 1;
@@ -18,8 +33,20 @@
   outline: none;
 }
 
+.belowInputWrap {
+  justify-content: flex-end;
+  display: flex;
+}
+
 .button {
   width: 140px;
   align-self: flex-end;
   margin-top: 10px;
+}
+
+.errorButton {
+  width: 100%;
+  max-width: 180px;
+  align-self: center;
+  margin-top: 20px;
 }
