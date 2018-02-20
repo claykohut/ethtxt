@@ -1,7 +1,5 @@
 import Web3 from 'web3'
 
-import parseDomain from 'parse-domain';
-
 import { ETH_PROVIDER_URL, ETH_PROVIDER_URL_ROPSTEN } from 'constants';
 
 let getWeb3 = new Promise(function(resolve, reject) {
