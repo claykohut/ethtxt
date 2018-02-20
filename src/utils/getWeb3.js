@@ -16,7 +16,8 @@ let getWeb3 = new Promise(function(resolve, reject) {
       web3 = new Web3(web3.currentProvider)
 
       results = {
-        web3: web3
+        web3: web3,
+        injected: true
       }
 
       console.log('Injected web3 detected.');
@@ -42,7 +43,8 @@ let getWeb3 = new Promise(function(resolve, reject) {
 })
 
 export function getProviderUrl() {
-  if(location.href.indexOf('ropsten.') !== -1) {
+  if(location.href.indexOf('ropsten.') !== -1 || location.href.indexOf('firebaseapp.') !== -1) {
+    console.log('using ropsten!!')
     return ETH_PROVIDER_URL_ROPSTEN;
   }
   return ETH_PROVIDER_URL;

@@ -4,11 +4,12 @@ import "./StrUtils.sol";
 
 contract EthTxt {
 
-  event NewText(string text, string code);
+  event NewText(string text, string code, address submitter, uint timestamp);
 
   struct StoredText {
       string text;
       address submitter;
+      uint timestamp;
   }
 
   uint storedTextCount = 0;
@@ -29,8 +30,8 @@ contract EthTxt {
     require(bytes(getText(code)).length == 0);
 
     // add text to map
-    texts[code] = StoredText(_text, msg.sender);
-    NewText(_text, code);
+    texts[code] = StoredText(_text, msg.sender, now);
+    NewText(_text, code, msg.sender, now);
     storedTextCount = storedTextCount + 1;
   }
 
