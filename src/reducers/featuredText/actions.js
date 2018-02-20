@@ -2,10 +2,13 @@ import EthTxtContract from 'contracts/EthTxt.json'
 
 // local web3, not metamask
 import Web3 from 'web3'
-import { ETH_PROVIDER_URL } from 'constants';
 // used for stuff metamask isnt good at, like filtering events
 
-const localProvider = new Web3.providers.HttpProvider(ETH_PROVIDER_URL)
+import { getProviderUrl } from 'utils/getWeb3';
+
+const PROVIDER_URL = getProviderUrl();
+
+const localProvider = new Web3.providers.HttpProvider(PROVIDER_URL)
 
 export const SET_FEATURED_TEXT = 'SET_FEATURED_TEXT';
 export const SUBMIT_TEXT_START = 'SUBMIT_TEXT_START';
@@ -50,7 +53,7 @@ export function getArchivedText(code) {
   return (dispatch, getState) => {
     const { web3 } = getState();
 
-    simpleStorage.setProvider(web3.currentProvider)
+    simpleStorage.setProvider(localProvider);
     var simpleStorageInstance;
 
     return new Promise((resolve, reject) => {

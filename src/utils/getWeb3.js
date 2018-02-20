@@ -1,6 +1,8 @@
 import Web3 from 'web3'
 
-import { ETH_PROVIDER_URL } from 'constants';
+import parseDomain from 'parse-domain';
+
+import { ETH_PROVIDER_URL, ETH_PROVIDER_URL_ROPSTEN } from 'constants';
 
 let getWeb3 = new Promise(function(resolve, reject) {
   // Wait for loading completion to avoid race conditions with web3 injection timing.
@@ -25,7 +27,8 @@ let getWeb3 = new Promise(function(resolve, reject) {
     } else {
       // Fallback to localhost if no web3 injection. We've configured this to
       // use the development console's port by default.
-      var provider = new Web3.providers.HttpProvider(ETH_PROVIDER_URL)
+      const providerUrl = getProviderUrl();
+      var provider = new Web3.providers.HttpProvider(providerUrl);
 
       web3 = new Web3(provider)
 
@@ -39,5 +42,12 @@ let getWeb3 = new Promise(function(resolve, reject) {
     }
   })
 })
+
+export function getProviderUrl() {
+  if(location.href.indexOf('ropsten.') !== -1) {
+    return ETH_PROVIDER_URL_ROPSTEN;
+  }
+  return ETH_PROVIDER_URL;
+}
 
 export default getWeb3
