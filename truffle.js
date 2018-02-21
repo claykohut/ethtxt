@@ -1,7 +1,6 @@
 var HDWalletProvider = require("truffle-hdwallet-provider");
 
 const config = require('./infura-config');
-
 const { infura_apikey, mnemonic_testnet, mnemonic_live } = config;
 
 module.exports = {
@@ -17,8 +16,8 @@ module.exports = {
     ropsten:  {
       provider: new HDWalletProvider(mnemonic_testnet, "https://ropsten.infura.io/"+infura_apikey),
       network_id: 3,
-      gas:   2900000,
-      gasPrice: 5000000000 // 10 GWEI
+      gas: 2900000,
+      gasPrice: 10000000000 // 10 GWEI
     },
     live:  {
        provider: new HDWalletProvider(mnemonic_live, "https://mainnet.infura.io/"+infura_apikey),

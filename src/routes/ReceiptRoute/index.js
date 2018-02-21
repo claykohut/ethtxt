@@ -12,12 +12,14 @@ class ReceiptRoute extends Component {
     super(props);
     this.state = {
       blockNumber: null,
+      fromAddress: null,
     }
   }
 
   componentDidMount() {
     console.log('about to start watch...');
-    this.intervalId  = setInterval(this.checkForTransactionReceipt, 1000);
+    this.checkForTransactionReceipt();
+    this.intervalId = setInterval(this.checkForTransactionReceipt, 2500);
   }
 
   componentWillUnmount() {
@@ -25,28 +27,32 @@ class ReceiptRoute extends Component {
   }
 
   checkForTransactionReceipt = () => {
-    console.log('in get tx receipt..')
     const { web3, match: { params = {} } } = this.props;
-    console.log('web3? ', web3)
     web3.eth.getTransactionReceipt(params.tx, (err, data) => {
-      console.log('response from tx receipt? ', err, ' data ', data)
       if(data) {
         clearInterval(this.intervalId);
-        this.setState({ blockNumber: data.blockNumber });
-        this.intervalId = setInterval(this.getTxReceiptData, 1000);
+        this.setState({
+          blockNumber: data.blockNumber,
+          fromAddress: data.from
+        }, () => {
+          this.getTxReceiptData();
+          this.intervalId = setInterval(this.getTxReceiptData, 2500);
+        });
       }
     })
   }
 
   getTxReceiptData = () => {
-    const { blockNumber } = this.state;
+    const { blockNumber, fromAddress } = this.state;
     const { match: { params = {} } } = this.props;
-    this.props.getReceiptData({ blockNumber, tx: params.tx })
+    this.props.getReceiptData({ blockNumber, fromAddress, tx: params.tx })
       .then((receipt) => {
         clearInterval(this.intervalId);
         const { args: { text, code } } = receipt;
-        console.log('got receipt?? ', receipt)
         this.props.history.push(`/${code}`);
+      })
+      .catch((err) => {
+        //console.log('in error ', err)
       })
   }
 

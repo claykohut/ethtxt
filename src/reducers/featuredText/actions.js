@@ -17,7 +17,7 @@ export const SUBMIT_TEXT_END = 'SUBMIT_TEXT_END';
 const contract = require('truffle-contract')
 const simpleStorage = contract(EthTxtContract)
 
-export function getReceiptData({ tx, blockNumber }) {
+export function getReceiptData({ tx, blockNumber, fromAddress }) {
   return (dispatch, getState) => {
     const { web3 } = getState();
     simpleStorage.setProvider(localProvider)
@@ -26,25 +26,46 @@ export function getReceiptData({ tx, blockNumber }) {
     return new Promise((resolve, reject) => {
       simpleStorage.deployed().then((instance) => {
         simpleStorageInstance = instance
-        const allEvents = instance.allEvents({
-          fromBlock: blockNumber,
-          toBlock: blockNumber
-        });
-        allEvents.get((err, res) => {
-          console.log('in all events get... ', err,  'res ', res )
-          if(err) return reject(err);
-          if(res.length) {
-            const foundEvent = res.find((item) => {
-              return item.transactionHash === tx;
-            })
-            if(foundEvent) {
-              return resolve(foundEvent);
+
+        var filteredEvents = instance.NewText({submitter: fromAddress}, { fromBlock: blockNumber, toBlock: blockNumber });
+        console.log('filtered events?? ', filteredEvents)
+        filteredEvents.get(function(err, logs){
+          console.log('err, ', err, ' res ', logs)
+            if(err) return reject(err);
+            if(logs.length) {
+              const foundEvent = logs.find((item) => {
+                return item.transactionHash === tx;
+              })
+              if(foundEvent) {
+                return resolve(foundEvent);
+              }
             }
-          }
-          return reject();
+            return reject();
         });
+        // const allEvents = instance.allEvents({
+        //   submitter: fromAddress,
+        //   fromBlock: blockNumber,
+        //   toBlock: blockNumber
+        // });
+        //
+        // console.log('all revnets?? ', allEvents)
+        //
+        // allEvents.get((err, res) => {
+        //   console.log('err, ', err, ' res ', res)
+        //   if(err) return reject(err);
+        //   if(res.length) {
+        //     const foundEvent = res.find((item) => {
+        //       return item.transactionHash === tx;
+        //     })
+        //     if(foundEvent) {
+        //       return resolve(foundEvent);
+        //     }
+        //   }
+        //   return reject();
+        // })
+
       })
-    })
+    });
 
   }
 }
