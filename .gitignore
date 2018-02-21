@@ -4,6 +4,8 @@
 
 *.iml
 
+infura-config.js
+
 ## Directory-based project format:
 .idea/
 # if you remove the above rule, at least ignore the following:

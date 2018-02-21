@@ -14,6 +14,9 @@ contract EthTxt {
 
   uint storedTextCount = 0;
 
+  // change this to 0 for testnet / ropsten
+  uint blockoffset = 2000000;
+
   mapping (string => StoredText) texts;
 
   // this is the constructor
@@ -46,7 +49,7 @@ contract EthTxt {
   // Generates a shortlink code
   function _generateShortLink() private view returns (string) {
       var s1 = strUtils.toBase58(uint256(msg.sender), 2);
-      var s2 = strUtils.toBase58(block.number, 11);
+      var s2 = strUtils.toBase58(block.number - blockoffset, 11);
 
       var s = strUtils.concat(s1, s2);
       return s;
