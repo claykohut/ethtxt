@@ -15,7 +15,7 @@ contract EthTxt {
   uint storedTextCount = 0;
 
   // change this to 0 for testnet / ropsten
-  uint blockoffset = 2000000;
+  uint blockoffset = 4000000;
 
   mapping (string => StoredText) texts;
 

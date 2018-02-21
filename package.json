@@ -46,6 +46,7 @@
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
     "truffle-contract": "^1.1.8",
+    "truffle-hdwallet-provider": "0.0.3",
     "truffle-solidity-loader": "0.0.8",
     "uglifyjs-webpack-plugin": "^1.2.0",
     "url-loader": "0.5.7",
