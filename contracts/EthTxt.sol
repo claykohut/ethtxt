@@ -4,7 +4,7 @@ import "./StrUtils.sol";
 
 contract EthTxt {
 
-  event NewText(string text, string code, address indexed submitter, uint timestamp);
+  event NewText(string text, string indexed code, address indexed submitter, uint timestamp);
 
   struct StoredText {
       string text;
@@ -15,7 +15,7 @@ contract EthTxt {
   uint storedTextCount = 0;
 
   // change this to 0 for testnet / ropsten
-  uint blockoffset = 0; // 4000000;
+  uint blockoffset = 4000000;
 
   mapping (string => StoredText) texts;
 

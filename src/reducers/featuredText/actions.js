@@ -27,10 +27,10 @@ export function getReceiptData({ tx, blockNumber, fromAddress }) {
       simpleStorage.deployed().then((instance) => {
         simpleStorageInstance = instance
 
-        var filteredEvents = instance.NewText({submitter: fromAddress}, { fromBlock: blockNumber, toBlock: blockNumber });
-        console.log('filtered events?? ', filteredEvents)
+        var filteredEvents = instance.NewText({}, { fromBlock: blockNumber, toBlock: 'latest' });
+        console.log('filtered events?? ', filteredEvents, ' from? ', fromAddress)
         filteredEvents.get(function(err, logs){
-          console.log('err, ', err, ' res ', logs)
+          console.log('got logs? ', logs, ' err? ', err)
             if(err) return reject(err);
             if(logs.length) {
               const foundEvent = logs.find((item) => {
@@ -42,28 +42,6 @@ export function getReceiptData({ tx, blockNumber, fromAddress }) {
             }
             return reject();
         });
-        // const allEvents = instance.allEvents({
-        //   submitter: fromAddress,
-        //   fromBlock: blockNumber,
-        //   toBlock: blockNumber
-        // });
-        //
-        // console.log('all revnets?? ', allEvents)
-        //
-        // allEvents.get((err, res) => {
-        //   console.log('err, ', err, ' res ', res)
-        //   if(err) return reject(err);
-        //   if(res.length) {
-        //     const foundEvent = res.find((item) => {
-        //       return item.transactionHash === tx;
-        //     })
-        //     if(foundEvent) {
-        //       return resolve(foundEvent);
-        //     }
-        //   }
-        //   return reject();
-        // })
-
       })
     });
 

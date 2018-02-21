@@ -18,8 +18,10 @@ class ReceiptRoute extends Component {
 
   componentDidMount() {
     console.log('about to start watch...');
-    this.checkForTransactionReceipt();
-    this.intervalId = setInterval(this.checkForTransactionReceipt, 2500);
+    setTimeout(() => {
+      this.checkForTransactionReceipt();
+      this.intervalId = setInterval(this.checkForTransactionReceipt, 2500);
+    }, 250)
   }
 
   componentWillUnmount() {
@@ -27,8 +29,10 @@ class ReceiptRoute extends Component {
   }
 
   checkForTransactionReceipt = () => {
+    console.log('in get tx receipt..')
     const { web3, match: { params = {} } } = this.props;
     web3.eth.getTransactionReceipt(params.tx, (err, data) => {
+      console.log('response from tx receipt? ', err, ' data ', data)
       if(data) {
         clearInterval(this.intervalId);
         this.setState({
@@ -49,10 +53,11 @@ class ReceiptRoute extends Component {
       .then((receipt) => {
         clearInterval(this.intervalId);
         const { args: { text, code } } = receipt;
+        console.log('got receipt?? ', receipt)
         this.props.history.push(`/${code}`);
       })
       .catch((err) => {
-        //console.log('in error ', err)
+        console.log('in error ', err)
       })
   }
 
