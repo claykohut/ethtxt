@@ -27,7 +27,7 @@ export function getReceiptData({ tx, blockNumber, fromAddress }) {
       simpleStorage.deployed().then((instance) => {
         simpleStorageInstance = instance
 
-        var filteredEvents = instance.NewText({}, { fromBlock: blockNumber, toBlock: 'latest' });
+        var filteredEvents = instance.NewText({}, { fromBlock: blockNumber, toBlock: blockNumber });
         console.log('filtered events?? ', filteredEvents, ' from? ', fromAddress)
         filteredEvents.get(function(err, logs){
           console.log('got logs? ', logs, ' err? ', err)
