@@ -122,6 +122,7 @@ export function archiveText(text) {
             // this is the simpler approach but makes users wait a long time on a spinner
             return simpleStorageInstance.archiveText(text, {from: accounts[0], gas: 120000, gasPrice: 4000000000 })
               .on('transactionHash', function(hash){
+                dispatch({ type: SUBMIT_TEXT_END });
                 resolve(hash)
               })
               .on('receipt', function(receipt){
@@ -129,10 +130,6 @@ export function archiveText(text) {
               })
               .on('error', () => { reject() });
             })
-
-            // .then((result) => {
-            //   resolve(result);
-            // })
             // .catch((error) => {
             //   reject(error)
             // })
