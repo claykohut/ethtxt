@@ -52,7 +52,7 @@ class ReceiptRoute extends Component {
     this.props.getReceiptData({ blockNumber, fromAddress, tx: params.tx })
       .then((receipt) => {
         clearInterval(this.intervalId);
-        const { args: { text, code } } = receipt;
+        const { returnValues: { text, code } } = receipt;
         console.log('got receipt?? ', receipt)
         this.props.history.push(`/${code}`);
       })

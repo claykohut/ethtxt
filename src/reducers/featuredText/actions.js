@@ -26,22 +26,45 @@ export function getReceiptData({ tx, blockNumber, fromAddress }) {
     return new Promise((resolve, reject) => {
       simpleStorage.deployed().then((instance) => {
         simpleStorageInstance = instance
+        console.log('instance?? ', instance)
 
-        var filteredEvents = instance.NewText({submitter: fromAddress}, { fromBlock: blockNumber, toBlock: blockNumber });
-        console.log('filtered events?? ', filteredEvents, ' from? ', fromAddress)
-        filteredEvents.get(function(err, logs){
-          console.log('got logs? ', logs, ' err? ', err)
-            if(err) return reject(err);
-            if(logs.length) {
-              const foundEvent = logs.find((item) => {
-                return item.transactionHash === tx;
-              })
-              if(foundEvent) {
-                return resolve(foundEvent);
-              }
+        var myContract = new web3.eth.Contract(instance.abi, instance.address);
+
+        console.log('contract? ', myContract)
+
+        myContract.getPastEvents('NewText', {
+            filter: {submitter: fromAddress},
+            fromBlock: blockNumber,
+            toBlock: blockNumber
+        })
+        .then(function(events){
+            console.log(events)
+            if(!events || !events.length) {
+              return reject();
+            }
+            const foundEvent = events.find((item) => {
+              return item.transactionHash === tx;
+            })
+            if(foundEvent) {
+              return resolve(foundEvent);
             }
             return reject();
         });
+        // var filteredEvents = instance.NewText({submitter: fromAddress}, { fromBlock: blockNumber, toBlock: blockNumber });
+        // console.log('filtered events?? ', filteredEvents, ' from? ', fromAddress)
+        // filteredEvents.get(function(err, logs){
+        //   console.log('got logs? ', logs, ' err? ', err)
+        //     if(err) return reject(err);
+        //     if(logs.length) {
+        //       const foundEvent = logs.find((item) => {
+        //         return item.transactionHash === tx;
+        //       })
+        //       if(foundEvent) {
+        //         return resolve(foundEvent);
+        //       }
+        //     }
+        //     return reject();
+        // });
       })
     });
 
