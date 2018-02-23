@@ -120,7 +120,7 @@ export function archiveText(text) {
             //return simpleStorageInstance.archiveText.sendTransaction(text, {from: accounts[0], gas: 120000, gasPrice: 10000000000 });
             // calling method directly returns with receiot data but you have to wait until tx is mined
             // this is the simpler approach but makes users wait a long time on a spinner
-            return simpleStorageInstance.archiveText(text, {from: accounts[0], gas: 120000, gasPrice: 5000000000 })
+            return simpleStorageInstance.archiveText(text, {from: accounts[0], gas: 120000, gasPrice: 4000000000 })
               .on('transactionHash', function(hash){
                 resolve(hash)
               })
