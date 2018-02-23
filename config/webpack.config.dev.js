@@ -71,13 +71,17 @@ module.exports = {
     modulesDirectories: [
       resolve(__dirname, '../src'),
       resolve(__dirname, '../build'),
-      resolve(__dirname, '../node_modules')
+      resolve(__dirname, '../node_modules'),
+      resolve(__dirname, '../node_modules/web3/packages'),
+      resolve(__dirname, '../node_modules/web3/packages/web3-core/node_modules'),
+      resolve(__dirname, '../node_modules/web3/packages/web3-core-requestmanager/node_modules'),
+      resolve(__dirname, '../node_modules/node-libs-browser/node_modules'),
     ],
     // These are the reasonable defaults supported by the Node ecosystem.
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebookincubator/create-react-app/issues/290
-    extensions: ['.js', '.json', '.jsx', ''],
+    extensions: ['.js', '.json', '.jsx', "node_modules", ''],
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/

@@ -21,6 +21,9 @@
  * @date 2015
  */
 
+'use strict';
+
+
 var utils = require('../utils/utils');
 var config = require('../utils/config');
 var Iban = require('./iban');
@@ -190,11 +193,11 @@ var outputBlockFormatter = function(block) {
  * @returns {Object} log
 */
 var outputLogFormatter = function(log) {
-    if(log.blockNumber !== null)
+    if(log.blockNumber)
         log.blockNumber = utils.toDecimal(log.blockNumber);
-    if(log.transactionIndex !== null)
+    if(log.transactionIndex)
         log.transactionIndex = utils.toDecimal(log.transactionIndex);
-    if(log.logIndex !== null)
+    if(log.logIndex)
         log.logIndex = utils.toDecimal(log.logIndex);
 
     return log;
@@ -273,6 +276,9 @@ var inputAddressFormatter = function (address) {
 
 
 var outputSyncingFormatter = function(result) {
+    if (!result) {
+        return result;
+    }
 
     result.startingBlock = utils.toDecimal(result.startingBlock);
     result.currentBlock = utils.toDecimal(result.currentBlock);
