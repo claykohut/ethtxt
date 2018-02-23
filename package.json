@@ -48,7 +48,7 @@
     "truffle-contract": "trufflesuite/truffle-contract#web3-one",
     "truffle-hdwallet-provider": "0.0.3",
     "truffle-solidity-loader": "0.0.8",
-    "uglifyjs-webpack-plugin": "^1.2.0",
+    "uglifyjs-webpack-plugin": "^1.0.0-beta.2",
     "url-loader": "0.5.7",
     "webpack": "1.14.0",
     "webpack-dev-server": "1.16.2",

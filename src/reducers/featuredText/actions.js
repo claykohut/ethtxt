@@ -117,20 +117,26 @@ export function archiveText(text) {
             console.log('in submit... ', instance)
             dispatch({ type: SUBMIT_TEXT_START });
             // send transaciton recturns immediately but needs to poll for receipt when tx is mined
-            return simpleStorageInstance.archiveText.sendTransaction(text, {from: accounts[0]});
+            //return simpleStorageInstance.archiveText.sendTransaction(text, {from: accounts[0], gas: 120000, gasPrice: 10000000000 });
             // calling method directly returns with receiot data but you have to wait until tx is mined
             // this is the simpler approach but makes users wait a long time on a spinner
-            //return simpleStorageInstance.archiveText(text, {from: accounts[0]})
-          })
-          .then((result) => {
-            resolve(result);
-          })
-          .catch((error) => {
-            reject(error)
-          })
-          .finally(() => {
-            dispatch({ type: SUBMIT_TEXT_END });
-          })
+            return simpleStorageInstance.archiveText(text, {from: accounts[0], gas: 120000, gasPrice: 5000000000 })
+              .on('transactionHash', function(hash){
+                resolve(hash)
+              })
+              .on('receipt', function(receipt){
+                console.log("in receipt... ", receipt)
+              })
+              .on('error', () => { reject() });
+            })
+
+            // .then((result) => {
+            //   resolve(result);
+            // })
+            // .catch((error) => {
+            //   reject(error)
+            // })
+
         })
 
       })

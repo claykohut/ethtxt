@@ -7,6 +7,7 @@ var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 var url = require('url');
 var paths = require('./paths');
 var getClientEnvironment = require('./env');
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const { resolve } = require('path');
 
@@ -79,13 +80,17 @@ module.exports = {
     modulesDirectories: [
       resolve(__dirname, '../src'),
       resolve(__dirname, '../build'),
-      resolve(__dirname, '../node_modules')
+      resolve(__dirname, '../node_modules'),
+      resolve(__dirname, '../node_modules/web3/packages'),
+      resolve(__dirname, '../node_modules/web3/packages/web3-core/node_modules'),
+      resolve(__dirname, '../node_modules/web3/packages/web3-core-requestmanager/node_modules'),
+      resolve(__dirname, '../node_modules/node-libs-browser/node_modules'),
     ],
     // These are the reasonable defaults supported by the Node ecosystem.
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebookincubator/create-react-app/issues/290
-    extensions: ['.js', '.json', '.jsx', ''],
+    extensions: ['.js', '.json', '.jsx', 'node_modules', ''],
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -135,7 +140,7 @@ module.exports = {
       // Process JS with Babel.
       {
         test: /\.(js|jsx)$/,
-        include: paths.appSrc,
+        include: [paths.appSrc],
 
         loader: 'babel',
         query: {
@@ -249,19 +254,19 @@ module.exports = {
     // Try to dedupe duplicated modules, if any:
     new webpack.optimize.DedupePlugin(),
     // Minify the code.
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        screw_ie8: true, // React doesn't support IE8
-        warnings: false
-      },
-      mangle: {
-        screw_ie8: true
-      },
-      output: {
-        comments: false,
-        screw_ie8: true
-      },
-      exclude: /node_modules/,
+    new UglifyJSPlugin({
+      // compress: {
+      //   screw_ie8: true, // React doesn't support IE8
+      //   warnings: false
+      // },
+      // mangle: {
+      //   screw_ie8: true
+      // },
+      // output: {
+      //   comments: false,
+      //   screw_ie8: true
+      // },
+      // exclude: /node_modules/,
     }),
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
     new ExtractTextPlugin('static/css/[name].[contenthash:8].css'),

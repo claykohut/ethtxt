@@ -34,9 +34,16 @@ class HomeRoute extends Component {
         showingWeb3Error: true,
       });
     }
+    this.setState({
+      doingArchive: true,
+    })
     this.props.archiveText(inputText)
       .then((transactionHash) => {
+        console.log('transactionHash from archive?? ', transactionHash)
         this.props.history.push(`/receipt/${transactionHash}`);
+      })
+      .finally(() => {
+        this.setState({ doingArchive: false })
       })
   }
 
@@ -74,6 +81,7 @@ class HomeRoute extends Component {
               text="Archive this Text"
               onClick={this.doArchiveText}
               customStyle={styles.button}
+              loading={this.state.doingArchive}
             />
           </div>
         </div>
