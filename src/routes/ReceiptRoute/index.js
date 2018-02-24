@@ -77,13 +77,20 @@ class ReceiptRoute extends Component {
     return 'Processing. This may take a few minutes.'
   }
 
+  getEtherscanLink = () => {
+    const { match: { params = {} }} = this.props;
+    const isRopsten = location.href.indexOf('ropsten.') !== -1;
+    const prefix = isRopsten ? 'ropsten.' : '';
+    return `https://${prefix}etherscan.io/tx/${params.tx}`;
+  }
+
   render() {
     const { match: { params = {} }} = this.props;
     const { status, code, loading } = this.state;
     return (
-      <div>
+      <div className={styles.receiptWrap}>
         <div className={styles.title}>Transaction Receipt</div>
-        <div className={styles.transactionHash}>{params.tx}</div>
+        <a href={this.getEtherscanLink()} target="_blank" className={styles.transactionHash}>{params.tx}</a>
         <div className={styles.statusText}>{this.getStatusText()}</div>
         <Button
           text="Go to Text"
