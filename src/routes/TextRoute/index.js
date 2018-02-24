@@ -19,7 +19,10 @@ class TextRoute extends Component {
     const { match: { params: { code = '0' }} } = this.props;
     setTimeout(() => {
       this.props.getArchivedText(code)
-        .then((text = '404') => {
+        .then((textData) => {
+          let text = textData[0];
+          const submitter = textData[1];
+          const timestamp = textData[2];
           if(!text) {
             text = '404';
           }

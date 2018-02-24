@@ -31,7 +31,8 @@ class ReceiptRoute extends Component {
 
   checkForTransactionReceipt = () => {
     const { web3, match: { params = {} } } = this.props;
-    web3.eth.getTransactionReceipt(params.tx, (err, data) => {
+    web3.eth.getTransaction(params.tx, (err, data) => {
+      console.log('got response from receipt check? ', err, 'dta ', data)
       if(data) {
         clearInterval(this.intervalId);
         this.setState({
@@ -56,6 +57,7 @@ class ReceiptRoute extends Component {
     const { match: { params = {} } } = this.props;
     this.props.getReceiptData({ blockNumber, fromAddress, tx: params.tx })
       .then((receipt) => {
+        console.log('got event data? ')
         clearInterval(this.intervalId);
         const { returnValues: { text, code } } = receipt;
         this.setState({
@@ -65,7 +67,7 @@ class ReceiptRoute extends Component {
         })
       })
       .catch((err) => {
-        console.log('in error ', err)
+        console.log('in error from event data ', err)
       })
   }
 

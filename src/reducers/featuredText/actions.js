@@ -27,13 +27,14 @@ export function getReceiptData({ tx, blockNumber, fromAddress }) {
       simpleStorage.deployed().then((instance) => {
         simpleStorageInstance = instance
         var myContract = new web3.eth.Contract(instance.abi, instance.address);
+        console.log('got event.. ', fromAddress, ' block ', blockNumber)
         myContract.getPastEvents('NewText', {
             filter: {submitter: fromAddress},
             fromBlock: blockNumber,
             toBlock: blockNumber
         })
         .then(function(events){
-            console.log(events)
+            console.log('in contract response... ', events)
             if(!events || !events.length) {
               return reject();
             }
@@ -44,7 +45,10 @@ export function getReceiptData({ tx, blockNumber, fromAddress }) {
               return resolve(foundEvent);
             }
             return reject();
-        });
+        })
+        .catch((error) => {
+          console.log('error getting data... ', error)
+        })
       })
     });
 
@@ -61,9 +65,10 @@ export function getArchivedText(code) {
     return new Promise((resolve, reject) => {
         simpleStorage.deployed().then((instance) => {
           simpleStorageInstance = instance
-          return simpleStorageInstance.getText(code || '0')
+          return simpleStorageInstance.getTextFromCode(code || '0')
         })
         .then((result) => {
+          console.log('got result from text lookup: ', result)
           resolve(result);
         })
         .catch((error) => {
@@ -101,7 +106,7 @@ export function archiveText(text) {
                 resolve(hash)
               })
               .on('receipt', function(receipt){
-                // console.log("in receipt... ", receipt)
+                console.log("in receipt event... ", receipt)
               })
               .on('error', () => { reject() });
             })
