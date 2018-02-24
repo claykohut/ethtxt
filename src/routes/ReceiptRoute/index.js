@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { BarLoader } from 'react-spinners';
+import Button from 'components/Button';
 
 import { getReceiptData } from 'reducers/featuredText/actions';
 
@@ -13,11 +13,12 @@ class ReceiptRoute extends Component {
     this.state = {
       blockNumber: null,
       fromAddress: null,
+      status: null,
+      loading: true,
     }
   }
 
   componentDidMount() {
-    console.log('about to start watch...');
     setTimeout(() => {
       this.checkForTransactionReceipt();
       this.intervalId = setInterval(this.checkForTransactionReceipt, 2500);
@@ -29,10 +30,8 @@ class ReceiptRoute extends Component {
   }
 
   checkForTransactionReceipt = () => {
-    console.log('in get tx receipt..')
     const { web3, match: { params = {} } } = this.props;
     web3.eth.getTransactionReceipt(params.tx, (err, data) => {
-      console.log('response from tx receipt? ', err, ' data ', data)
       if(data) {
         clearInterval(this.intervalId);
         this.setState({
@@ -42,6 +41,12 @@ class ReceiptRoute extends Component {
           this.getTxReceiptData();
           this.intervalId = setInterval(this.getTxReceiptData, 2500);
         });
+      } else {
+        if(!this.state.status) {
+          this.setState({
+            status: 'pending'
+          });
+        }
       }
     })
   }
@@ -53,22 +58,42 @@ class ReceiptRoute extends Component {
       .then((receipt) => {
         clearInterval(this.intervalId);
         const { returnValues: { text, code } } = receipt;
-        console.log('got receipt?? ', receipt)
-        this.props.history.push(`/${code}`);
+        this.setState({
+          code,
+          status: null,
+          loading: false,
+        })
       })
       .catch((err) => {
         console.log('in error ', err)
       })
   }
 
+  getStatusText = () => {
+    const { status } = this.state;
+    if(!status) {
+      return '';
+    }
+    return 'Processing. This may take a few minutes.'
+  }
+
   render() {
     const { match: { params = {} }} = this.props;
-    const { status } = this.state;
+    const { status, code, loading } = this.state;
     return (
       <div>
-        <BarLoader
-          color="#4561CB"
-          height={6}
+        <div className={styles.title}>Transaction Receipt</div>
+        <div className={styles.transactionHash}>{params.tx}</div>
+        <div className={styles.statusText}>{this.getStatusText()}</div>
+        <Button
+          text="Go to Text"
+          onClick={() => {
+            if(code) {
+              this.props.history.push(`/${code}`);
+            }
+          }}
+          customStyle={styles.button}
+          loading={loading}
         />
       </div>
     )

@@ -26,12 +26,7 @@ export function getReceiptData({ tx, blockNumber, fromAddress }) {
     return new Promise((resolve, reject) => {
       simpleStorage.deployed().then((instance) => {
         simpleStorageInstance = instance
-        console.log('instance?? ', instance)
-
         var myContract = new web3.eth.Contract(instance.abi, instance.address);
-
-        console.log('contract? ', myContract)
-
         myContract.getPastEvents('NewText', {
             filter: {submitter: fromAddress},
             fromBlock: blockNumber,
@@ -50,21 +45,6 @@ export function getReceiptData({ tx, blockNumber, fromAddress }) {
             }
             return reject();
         });
-        // var filteredEvents = instance.NewText({submitter: fromAddress}, { fromBlock: blockNumber, toBlock: blockNumber });
-        // console.log('filtered events?? ', filteredEvents, ' from? ', fromAddress)
-        // filteredEvents.get(function(err, logs){
-        //   console.log('got logs? ', logs, ' err? ', err)
-        //     if(err) return reject(err);
-        //     if(logs.length) {
-        //       const foundEvent = logs.find((item) => {
-        //         return item.transactionHash === tx;
-        //       })
-        //       if(foundEvent) {
-        //         return resolve(foundEvent);
-        //       }
-        //     }
-        //     return reject();
-        // });
       })
     });
 
@@ -114,25 +94,17 @@ export function archiveText(text) {
         web3.eth.getAccounts((error, accounts) => {
           simpleStorage.deployed().then((instance) => {
             simpleStorageInstance = instance
-            console.log('in submit... ', instance)
             dispatch({ type: SUBMIT_TEXT_START });
-            // send transaciton recturns immediately but needs to poll for receipt when tx is mined
-            //return simpleStorageInstance.archiveText.sendTransaction(text, {from: accounts[0], gas: 120000, gasPrice: 10000000000 });
-            // calling method directly returns with receiot data but you have to wait until tx is mined
-            // this is the simpler approach but makes users wait a long time on a spinner
             return simpleStorageInstance.archiveText(text, {from: accounts[0], gas: 120000, gasPrice: 4000000000 })
               .on('transactionHash', function(hash){
                 dispatch({ type: SUBMIT_TEXT_END });
                 resolve(hash)
               })
               .on('receipt', function(receipt){
-                console.log("in receipt... ", receipt)
+                // console.log("in receipt... ", receipt)
               })
               .on('error', () => { reject() });
             })
-            // .catch((error) => {
-            //   reject(error)
-            // })
 
         })
 

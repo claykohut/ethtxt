@@ -3,3 +3,30 @@
   flex-direction: column;
   margin-bottom: 10px;
 }
+
+.title {
+  font-weight: 700;
+  font-size: 24px;
+  text-align: center;
+  color: #4461cd;
+}
+
+.transactionHash {
+  font-size: 16px;
+  text-align: center;
+  color: #4461cd;
+  margin: 14px 0;
+}
+
+.statusText {
+  font-size: 16px;
+  text-align: center;
+  font-weight: 300;
+  color: #4461cd;
+  margin: 0 0 20px;
+}
+
+.button {
+  width: 160px;
+  margin: 0 auto;
+}
