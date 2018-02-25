@@ -74,6 +74,10 @@ var _ArrayExpression = require('./ArrayExpression');
 
 var _ArrayExpression2 = _interopRequireDefault(_ArrayExpression);
 
+var _BindExpression = require('./BindExpression');
+
+var _BindExpression2 = _interopRequireDefault(_BindExpression);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Composition map of types to their extractor functions.
@@ -95,7 +99,8 @@ var TYPES = {
   ObjectExpression: _ObjectExpression2.default,
   NewExpression: _NewExpression2.default,
   UpdateExpression: _UpdateExpression2.default,
-  ArrayExpression: _ArrayExpression2.default
+  ArrayExpression: _ArrayExpression2.default,
+  BindExpression: _BindExpression2.default
 };
 
 var noop = function noop() {
@@ -139,7 +144,8 @@ var LITERAL_TYPES = Object.assign({}, TYPES, {
     return extractedVal.filter(function (val) {
       return val !== null;
     });
-  }
+  },
+  BindExpression: noop
 });
 
 var errorMessage = function errorMessage(expression) {

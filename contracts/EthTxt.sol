@@ -37,7 +37,7 @@ contract EthTxt {
     return texts[_code].text;
   }
 
-  function getTextFromCode(string _code) public view returns (string, address, uint) {
+  function getDataFromCode(string _code) public view returns (string, address, uint) {
     return (texts[_code].text, texts[_code].submitter, texts[_code].timestamp);
   }
 

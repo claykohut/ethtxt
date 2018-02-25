@@ -20,10 +20,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @returns {String} - String representing the node's implicit role or '' if it doesn't exist.
  */
 function getImplicitRole(type, attributes) {
-  var normalizedType = type.toUpperCase();
-
-  if (_implicitRoles2.default[normalizedType]) {
-    return _implicitRoles2.default[normalizedType](attributes);
+  if (_implicitRoles2.default[type]) {
+    return _implicitRoles2.default[type](attributes);
   }
 
   return '';

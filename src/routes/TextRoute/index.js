@@ -12,6 +12,8 @@ class TextRoute extends Component {
     this.state = {
       loading: true,
       text: '',
+      submiter: null,
+      timestamp: null,
     };
   }
 
@@ -26,7 +28,7 @@ class TextRoute extends Component {
           if(!text) {
             text = '404';
           }
-          this.setState({ text });
+          this.setState({ text, submitter, timestamp });
         })
         .catch((error) => {
           console.log('got error? ', error)

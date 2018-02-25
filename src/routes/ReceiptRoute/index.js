@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Button from 'components/Button';
 
-import { getReceiptData } from 'reducers/featuredText/actions';
+import { getTransactionReceipt, getReceiptData } from 'reducers/featuredText/actions';
 
 import styles from './ReceiptStyle.css';
 
@@ -15,14 +15,14 @@ class ReceiptRoute extends Component {
       fromAddress: null,
       status: null,
       loading: true,
-    }
+    };
   }
 
   componentDidMount() {
     setTimeout(() => {
       this.checkForTransactionReceipt();
       this.intervalId = setInterval(this.checkForTransactionReceipt, 2500);
-    }, 250)
+    }, 250);
   }
 
   componentWillUnmount() {
@@ -30,26 +30,26 @@ class ReceiptRoute extends Component {
   }
 
   checkForTransactionReceipt = () => {
-    const { web3, match: { params = {} } } = this.props;
-    web3.eth.getTransaction(params.tx, (err, data) => {
-      console.log('got response from receipt check? ', err, 'dta ', data)
-      if(data) {
+    const { match: { params = {} } } = this.props;
+    this.props.getTransactionReceipt({ tx: params.tx })
+      .then((data) => {
+        console.log('got response from receipt check? ', data);
         clearInterval(this.intervalId);
         this.setState({
           blockNumber: data.blockNumber,
-          fromAddress: data.from
+          fromAddress: data.from,
         }, () => {
           this.getTxReceiptData();
           this.intervalId = setInterval(this.getTxReceiptData, 2500);
         });
-      } else {
-        if(!this.state.status) {
+      })
+      .catch(() => {
+        if (!this.state.status) {
           this.setState({
-            status: 'pending'
+            status: 'pending',
           });
         }
-      }
-    })
+      });
   }
 
   getTxReceiptData = () => {
@@ -57,37 +57,37 @@ class ReceiptRoute extends Component {
     const { match: { params = {} } } = this.props;
     this.props.getReceiptData({ blockNumber, fromAddress, tx: params.tx })
       .then((receipt) => {
-        console.log('got event data? ')
+        console.log('got event data? ');
         clearInterval(this.intervalId);
         const { returnValues: { text, code } } = receipt;
         this.setState({
           code,
           status: null,
           loading: false,
-        })
+        });
       })
       .catch((err) => {
-        console.log('in error from event data ', err)
-      })
+        console.log('in error from event data ', err);
+      });
   }
 
   getStatusText = () => {
     const { status } = this.state;
-    if(!status) {
+    if (!status) {
       return '';
     }
-    return 'Processing. This may take a few minutes.'
+    return 'Processing. This may take a few minutes.';
   }
 
   getEtherscanLink = () => {
-    const { match: { params = {} }} = this.props;
+    const { match: { params = {} } } = this.props;
     const isRopsten = location.href.indexOf('ropsten.') !== -1;
     const prefix = isRopsten ? 'ropsten.' : '';
     return `https://${prefix}etherscan.io/tx/${params.tx}`;
   }
 
   render() {
-    const { match: { params = {} }} = this.props;
+    const { match: { params = {} } } = this.props;
     const { status, code, loading } = this.state;
     return (
       <div className={styles.receiptWrap}>
@@ -97,7 +97,7 @@ class ReceiptRoute extends Component {
         <Button
           text="Go to Text"
           onClick={() => {
-            if(code) {
+            if (code) {
               this.props.history.push(`/${code}`);
             }
           }}
@@ -105,14 +105,14 @@ class ReceiptRoute extends Component {
           loading={loading}
         />
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    web3: state.web3
-  }
-}
+    web3: state.web3,
+  };
+};
 
-export default connect(mapStateToProps, { getReceiptData })(ReceiptRoute);
+export default connect(mapStateToProps, { getTransactionReceipt, getReceiptData })(ReceiptRoute);

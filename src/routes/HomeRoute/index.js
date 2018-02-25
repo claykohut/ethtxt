@@ -39,12 +39,17 @@ class HomeRoute extends Component {
     })
     this.props.archiveText(inputText)
       .then((transactionHash) => {
-        console.log('transactionHash from archive?? ', transactionHash)
         this.props.history.push(`/receipt/${transactionHash}`);
       })
       .finally(() => {
         this.setState({ doingArchive: false })
       })
+  }
+
+  handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      this.doArchiveText();
+    }
   }
 
   render() {
@@ -74,6 +79,7 @@ class HomeRoute extends Component {
             className={styles.input}
             placeholder="New text here..."
             value={inputText}
+            onKeyPress={this.handleKeyPress}
             onChange={(event) => this.onChangeText(event.target.value)}
           />
           <div className={styles.belowInputWrap}>
