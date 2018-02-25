@@ -5,6 +5,8 @@ import { archiveText } from 'reducers/featuredText/actions';
 
 import Logo from 'components/Logo';
 import Button from 'components/Button';
+import LoadingView from 'components/LoadingView';
+
 import styles from './HomeStyle.css';
 
 class HomeRoute extends Component {
@@ -58,6 +60,10 @@ class HomeRoute extends Component {
 
   render() {
     const { inputText, doingArchive, showingWeb3Error } = this.state;
+    const { web3 } = this.props;
+    if (!web3 || !web3.initialized) {
+      return <LoadingView />
+    }
     if (showingWeb3Error) {
       return (
         <div className={styles.errorWrap}>
