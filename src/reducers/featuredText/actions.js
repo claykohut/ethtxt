@@ -27,7 +27,7 @@ export function getTransactionReceipt({ tx }) {
         if (err || !data) {
           return reject();
         }
-        resolve(data);
+        return resolve(data);
       });
     });
   };
@@ -37,11 +37,9 @@ export function getReceiptData({ tx, blockNumber, fromAddress }) {
   return (dispatch, getState) => {
     const { web3 } = getState();
     simpleStorage.setProvider(localProvider);
-    let simpleStorageInstance;
 
     return new Promise((resolve, reject) => {
       simpleStorage.deployed().then((instance) => {
-        simpleStorageInstance = instance;
         console.log('instance?? ', instance, ' simpleStorage ', simpleStorage);
         const myContract = new web3.eth.Contract(instance.abi, instance.address);
         console.log('got event.. ', fromAddress, ' block ', blockNumber);
@@ -73,8 +71,6 @@ export function getReceiptData({ tx, blockNumber, fromAddress }) {
 
 export function getArchivedText(code) {
   return (dispatch, getState) => {
-    const { web3 } = getState();
-
     simpleStorage.setProvider(localProvider);
     let simpleStorageInstance;
 

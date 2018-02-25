@@ -8,11 +8,9 @@ import TextBox from 'components/TextBox';
 class TextRoute extends Component {
   constructor(props) {
     super(props);
-    console.log('props? ', props);
     this.state = {
-      loading: true,
       text: '',
-      submiter: null,
+      submitter: null,
       timestamp: null,
     };
   }
@@ -31,7 +29,6 @@ class TextRoute extends Component {
           this.setState({ text, submitter, timestamp });
         })
         .catch((error) => {
-          console.log('got error? ', error);
           this.setState({ text: '404' });
         });
     });

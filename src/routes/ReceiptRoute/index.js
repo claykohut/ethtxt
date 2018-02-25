@@ -29,6 +29,40 @@ class ReceiptRoute extends Component {
     clearInterval(this.intervalId);
   }
 
+  getStatusText = () => {
+    const { status } = this.state;
+    if (!status) {
+      return '';
+    }
+    return 'Processing. This may take a few minutes.';
+  }
+
+  getEtherscanLink = () => {
+    const { match: { params = {} } } = this.props;
+    const isRopsten = window.location.href.indexOf('ropsten.') !== -1;
+    const prefix = isRopsten ? 'ropsten.' : '';
+    return `https://${prefix}etherscan.io/tx/${params.tx}`;
+  }
+
+  getTxReceiptData = () => {
+    const { blockNumber, fromAddress } = this.state;
+    const { match: { params = {} } } = this.props;
+    this.props.getReceiptData({ blockNumber, fromAddress, tx: params.tx })
+      .then((receipt) => {
+        console.log('got event data? ');
+        clearInterval(this.intervalId);
+        const { returnValues: { code } } = receipt;
+        this.setState({
+          code,
+          status: null,
+          loading: false,
+        });
+      })
+      .catch((err) => {
+        console.log('in error from event data ', err);
+      });
+  }
+
   checkForTransactionReceipt = () => {
     const { match: { params = {} } } = this.props;
     this.props.getTransactionReceipt({ tx: params.tx })
@@ -52,43 +86,9 @@ class ReceiptRoute extends Component {
       });
   }
 
-  getTxReceiptData = () => {
-    const { blockNumber, fromAddress } = this.state;
-    const { match: { params = {} } } = this.props;
-    this.props.getReceiptData({ blockNumber, fromAddress, tx: params.tx })
-      .then((receipt) => {
-        console.log('got event data? ');
-        clearInterval(this.intervalId);
-        const { returnValues: { text, code } } = receipt;
-        this.setState({
-          code,
-          status: null,
-          loading: false,
-        });
-      })
-      .catch((err) => {
-        console.log('in error from event data ', err);
-      });
-  }
-
-  getStatusText = () => {
-    const { status } = this.state;
-    if (!status) {
-      return '';
-    }
-    return 'Processing. This may take a few minutes.';
-  }
-
-  getEtherscanLink = () => {
-    const { match: { params = {} } } = this.props;
-    const isRopsten = location.href.indexOf('ropsten.') !== -1;
-    const prefix = isRopsten ? 'ropsten.' : '';
-    return `https://${prefix}etherscan.io/tx/${params.tx}`;
-  }
-
   render() {
     const { match: { params = {} } } = this.props;
-    const { status, code, loading } = this.state;
+    const { code, loading } = this.state;
     return (
       <div className={styles.receiptWrap}>
         <div className={styles.title}>Transaction Receipt</div>

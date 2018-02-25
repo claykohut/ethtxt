@@ -2,11 +2,20 @@ import Web3 from 'web3';
 
 import { ETH_PROVIDER_URL, ETH_PROVIDER_URL_ROPSTEN } from 'constants';
 
+
+export function getProviderUrl() {
+  if (window.location.href.indexOf('ropsten.') !== -1 || window.location.href.indexOf('firebaseapp.') !== -1) {
+    console.log('using ropsten!!');
+    return ETH_PROVIDER_URL_ROPSTEN;
+  }
+  return ETH_PROVIDER_URL;
+}
+
 const getWeb3 = new Promise(((resolve, reject) => {
   // Wait for loading completion to avoid race conditions with web3 injection timing.
   window.addEventListener('load', () => {
     let results;
-    let web3 = window.web3;
+    let { web3 } = window;
 
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
     if (typeof web3 !== 'undefined') {
@@ -41,13 +50,5 @@ const getWeb3 = new Promise(((resolve, reject) => {
     }
   });
 }));
-
-export function getProviderUrl() {
-  if (location.href.indexOf('ropsten.') !== -1 || location.href.indexOf('firebaseapp.') !== -1) {
-    console.log('using ropsten!!');
-    return ETH_PROVIDER_URL_ROPSTEN;
-  }
-  return ETH_PROVIDER_URL;
-}
 
 export default getWeb3;

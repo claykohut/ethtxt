@@ -7,11 +7,9 @@
       "jsx": true
     }
   },
-  "settings": {
+  "settings" : {
     "import/resolver": {
-      "node": {
-        "paths": ["app"]
-      }
+      "node": { "paths": ["src"] }
     }
   },
   "env": {
@@ -23,12 +21,18 @@
   "rules": {
     "space-before-function-paren": "off",
     "react/prefer-stateless-function": "off",
+    "react/prop-types": "off",
+    "react/no-unused-state": "warn",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "linebreak-style": "off",
     "global-require": "off",
     "semi": "warn",
     "arrow-body-style": "off",
     "jsx-a11y/click-events-have-key-events": "off",
-    "jsx-a11y/interactive-supports-focus": "off"
+    "jsx-a11y/interactive-supports-focus": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "no-unused-vars": ["error", { "args": "none" } ],
+    "max-len": "warn",
+    "no-case-declarations": "off",
   }
 }

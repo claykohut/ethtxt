@@ -30,9 +30,10 @@ class HomeRoute extends Component {
       return;
     }
     if (!web3.injected) {
-      return this.setState({
+      this.setState({
         showingWeb3Error: true,
       });
+      return;
     }
     this.setState({
       doingArchive: true,
@@ -54,8 +55,6 @@ class HomeRoute extends Component {
 
   render() {
     const { inputText, doingArchive, showingWeb3Error } = this.state;
-    const { featuredText } = this.props;
-
     if (showingWeb3Error) {
       return (
         <div className={styles.errorWrap}>
@@ -65,12 +64,11 @@ class HomeRoute extends Component {
           <Button
             text="Okay"
             customStyle={styles.errorButton}
-            onClick={() => location.reload()}
+            onClick={() => window.location.reload()}
           />
         </div>
       );
     }
-
     return (
       <div>
         <Logo />
@@ -87,7 +85,7 @@ class HomeRoute extends Component {
               text="Archive this Text"
               onClick={this.doArchiveText}
               customStyle={styles.button}
-              loading={this.state.doingArchive}
+              loading={doingArchive}
             />
           </div>
         </div>
