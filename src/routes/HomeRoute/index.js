@@ -42,6 +42,9 @@ class HomeRoute extends Component {
       .then((transactionHash) => {
         this.props.history.push(`/receipt/${transactionHash}`);
       })
+      .catch((err) => {
+        console.log('got error from archive...', err)
+      })
       .finally(() => {
         this.setState({ doingArchive: false });
       });

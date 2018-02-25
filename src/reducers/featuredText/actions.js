@@ -21,9 +21,10 @@ const simpleStorage = contract(EthTxtContract);
 
 export function getTransactionReceipt({ tx }) {
   return (dispatch, getState) => {
+    const { web3 } = getState();
     simpleStorage.setProvider(localProvider);
     return new Promise((resolve, reject) => {
-      simpleStorage.web3.eth.getTransaction(tx, (err, data) => {
+      web3.eth.getTransaction(tx, (err, data) => {
         if (err || !data) {
           return reject();
         }
@@ -119,7 +120,7 @@ export function archiveText(text) {
             .on('receipt', (receipt) => {
               console.log('in receipt event... ', receipt);
             })
-            .on('error', () => { reject(); });
+            .on('error', (err) => { reject(err); })
         });
       });
     });

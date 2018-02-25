@@ -22,6 +22,7 @@
     "space-before-function-paren": "off",
     "react/prefer-stateless-function": "off",
     "react/prop-types": "off",
+    "react/sort-comp": "off",
     "react/no-unused-state": "warn",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "linebreak-style": "off",

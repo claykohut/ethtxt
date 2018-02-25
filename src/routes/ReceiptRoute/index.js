@@ -44,24 +44,6 @@ class ReceiptRoute extends Component {
     return `https://${prefix}etherscan.io/tx/${params.tx}`;
   }
 
-  getTxReceiptData = () => {
-    const { blockNumber, fromAddress } = this.state;
-    const { match: { params = {} } } = this.props;
-    this.props.getReceiptData({ blockNumber, fromAddress, tx: params.tx })
-      .then((receipt) => {
-        console.log('got event data? ');
-        clearInterval(this.intervalId);
-        const { returnValues: { code } } = receipt;
-        this.setState({
-          code,
-          status: null,
-          loading: false,
-        });
-      })
-      .catch((err) => {
-        console.log('in error from event data ', err);
-      });
-  }
 
   checkForTransactionReceipt = () => {
     const { match: { params = {} } } = this.props;
@@ -83,6 +65,26 @@ class ReceiptRoute extends Component {
             status: 'pending',
           });
         }
+      });
+  }
+
+
+  getTxReceiptData = () => {
+    const { blockNumber, fromAddress } = this.state;
+    const { match: { params = {} } } = this.props;
+    this.props.getReceiptData({ blockNumber, fromAddress, tx: params.tx })
+      .then((receipt) => {
+        console.log('got event data? ', receipt);
+        clearInterval(this.intervalId);
+        const { returnValues: { code } } = receipt;
+        this.setState({
+          code,
+          status: null,
+          loading: false,
+        });
+      })
+      .catch((err) => {
+        console.log('in error from event data ', err);
       });
   }
 
