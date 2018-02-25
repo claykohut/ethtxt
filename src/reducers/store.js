@@ -9,9 +9,9 @@ import { initWeb3 } from 'reducers/web3/actions';
 
 const store = createStore(reducer, compose(
   applyMiddleware(thunk, promiseMiddleware),
-  window.devToolsExtension ? window.devToolsExtension() : f => f
+  window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
 
-store.dispatch(initWeb3())
+store.dispatch(initWeb3());
 
 export default store;

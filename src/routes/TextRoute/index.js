@@ -8,7 +8,7 @@ import TextBox from 'components/TextBox';
 class TextRoute extends Component {
   constructor(props) {
     super(props);
-    console.log('props? ', props)
+    console.log('props? ', props);
     this.state = {
       loading: true,
       text: '',
@@ -18,23 +18,23 @@ class TextRoute extends Component {
   }
 
   componentDidMount() {
-    const { match: { params: { code = '0' }} } = this.props;
+    const { match: { params: { code = '0' } } } = this.props;
     setTimeout(() => {
       this.props.getArchivedText(code)
         .then((textData) => {
           let text = textData[0];
           const submitter = textData[1];
           const timestamp = textData[2];
-          if(!text) {
+          if (!text) {
             text = '404';
           }
           this.setState({ text, submitter, timestamp });
         })
         .catch((error) => {
-          console.log('got error? ', error)
-          this.setState({ text: '404' })
-        })
-    })
+          console.log('got error? ', error);
+          this.setState({ text: '404' });
+        });
+    });
   }
 
   render() {
@@ -44,14 +44,14 @@ class TextRoute extends Component {
           text={this.state.text}
         />
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    web3: state.web3
-  }
-}
+    web3: state.web3,
+  };
+};
 
 export default connect(mapStateToProps, { getArchivedText })(TextRoute);

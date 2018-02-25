@@ -4,17 +4,16 @@ import { BarLoader } from 'react-spinners';
 import styles from 'components/Button/ButtonStyle.css';
 
 class Button extends Component {
-
   static defaultProps = {
-      text: '',
-      onClick: () => {},
-      customStyle: '',
-      loading: false,
+    text: '',
+    onClick: () => {},
+    customStyle: '',
+    loading: false,
   }
 
   renderLoader = () => {
     const { loading } = this.props;
-    if(!loading) {
+    if (!loading) {
       return null;
     }
     return (
@@ -24,11 +23,13 @@ class Button extends Component {
           height={6}
         />
       </div>
-    )
+    );
   }
 
   render() {
-    const { text, onClick, customStyle, loading } = this.props;
+    const {
+      text, onClick, customStyle, loading,
+    } = this.props;
     return (
       <div
         className={`${styles.button} ${customStyle} ${loading ? styles.buttonLoading : ''}`}
@@ -37,7 +38,7 @@ class Button extends Component {
         { this.renderLoader() }
         <span className={loading ? styles.hideText : null}>{ text }</span>
       </div>
-    )
+    );
   }
 }
 

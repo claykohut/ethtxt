@@ -13,37 +13,37 @@ class HomeRoute extends Component {
     this.state = {
       inputText: '',
       doingArchive: false,
-      showingWeb3Error: false
-    }
+      showingWeb3Error: false,
+    };
   }
 
   onChangeText = (value) => {
     this.setState({
-      inputText: value
-    })
+      inputText: value,
+    });
   }
 
   doArchiveText = () => {
     const { inputText } = this.state;
     const { web3 } = this.props;
-    if(inputText.length === 0) {
+    if (inputText.length === 0) {
       return;
     }
-    if(!web3.injected) {
+    if (!web3.injected) {
       return this.setState({
         showingWeb3Error: true,
       });
     }
     this.setState({
       doingArchive: true,
-    })
+    });
     this.props.archiveText(inputText)
       .then((transactionHash) => {
         this.props.history.push(`/receipt/${transactionHash}`);
       })
       .finally(() => {
-        this.setState({ doingArchive: false })
-      })
+        this.setState({ doingArchive: false });
+      });
   }
 
   handleKeyPress = (e) => {
@@ -56,7 +56,7 @@ class HomeRoute extends Component {
     const { inputText, doingArchive, showingWeb3Error } = this.state;
     const { featuredText } = this.props;
 
-    if(showingWeb3Error) {
+    if (showingWeb3Error) {
       return (
         <div className={styles.errorWrap}>
           <div className={styles.errorText}>
@@ -68,7 +68,7 @@ class HomeRoute extends Component {
             onClick={() => location.reload()}
           />
         </div>
-      )
+      );
     }
 
     return (
@@ -80,7 +80,7 @@ class HomeRoute extends Component {
             placeholder="New text here..."
             value={inputText}
             onKeyPress={this.handleKeyPress}
-            onChange={(event) => this.onChangeText(event.target.value)}
+            onChange={event => this.onChangeText(event.target.value)}
           />
           <div className={styles.belowInputWrap}>
             <Button
@@ -92,7 +92,7 @@ class HomeRoute extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -100,7 +100,7 @@ const mapStateToProps = (state) => {
   return {
     featuredText: state.featuredText,
     web3: state.web3,
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, { archiveText })(HomeRoute);

@@ -6,7 +6,7 @@ class Logo extends Component {
   render() {
     return (
       <div className={styles.logo}>ETHTXT</div>
-    )
+    );
   }
 }
 
