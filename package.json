@@ -57,6 +57,7 @@
   },
   "dependencies": {
     "dotenv": "^2.0.0",
+    "moment": "^2.20.1",
     "parse-domain": "^2.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -67,9 +68,9 @@
     "redux": "^3.7.2",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.2.0",
+    "truffle-contract": "trufflesuite/truffle-contract#web3-one",
     "web3": "^1.0.0-beta.30",
-    "web3-utils": "^1.0.0-beta.30",
-    "truffle-contract": "trufflesuite/truffle-contract#web3-one"
+    "web3-utils": "^1.0.0-beta.30"
   },
   "scripts": {
     "start": "node scripts/start.js",

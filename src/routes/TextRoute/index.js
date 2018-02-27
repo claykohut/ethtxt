@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import { getArchivedText } from 'reducers/featuredText/actions';
 
-import TextBox from 'components/TextBox';
+import LoadingView from 'components/LoadingView';
+
+import styles from 'routes/TextRoute/TextRouteStyle.css';
 
 class TextRoute extends Component {
   constructor(props) {
@@ -34,12 +37,34 @@ class TextRoute extends Component {
     });
   }
 
-  render() {
+  renderDetails = () => {
+    const { submitter, timestamp } = this.state;
+
+    if (!submitter || !timestamp) {
+      return null;
+    }
     return (
-      <div>
-        <TextBox
-          text={this.state.text}
-        />
+      <div className={styles.outerDetails}>
+        <div className={styles.separator} />
+        <div className={styles.details}>
+          <div className={styles.address}>{submitter}</div>
+          <div>{moment.unix(timestamp).format('LLLL')}</div>
+        </div>
+      </div>
+    )
+  }
+
+  render() {
+    const { text } = this.state;
+
+    if (!text) {
+      return <LoadingView />
+    }
+
+    return (
+      <div className={styles.textPageWrap}>
+        <div className={styles.featuredText}>{ text }</div>
+        { this.renderDetails() }
       </div>
     );
   }
