@@ -13,7 +13,7 @@
 .featuredText {
   color: #4462CC;
   font-family: 'Lato', sans-serif;
-  font-size: 32px;
+  font-size: 36px;
   text-align: center;
 }
 
@@ -38,14 +38,15 @@
   font-size: 14px;
 }
 
-.address {
+.detailItem {
   word-wrap: break-word;
   width: 100%;
   text-align: center;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 500px) {
   .featuredText {
-    font-size: 20px;
+    font-size: 24px;
   }
 }

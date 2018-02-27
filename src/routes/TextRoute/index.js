@@ -15,6 +15,7 @@ class TextRoute extends Component {
       text: '',
       submitter: null,
       timestamp: null,
+      displayDetail: 'time',
     };
   }
 
@@ -37,8 +38,16 @@ class TextRoute extends Component {
     });
   }
 
+  toggleDisplayDetail = () => {
+    const { displayDetail } = this.state;
+    const newDetail = displayDetail === 'time' ? 'submitter' : 'time';
+    this.setState({
+      displayDetail: newDetail,
+    });
+  }
+
   renderDetails = () => {
-    const { submitter, timestamp } = this.state;
+    const { submitter, timestamp, displayDetail } = this.state;
 
     if (!submitter || !timestamp) {
       return null;
@@ -47,18 +56,19 @@ class TextRoute extends Component {
       <div className={styles.outerDetails}>
         <div className={styles.separator} />
         <div className={styles.details}>
-          <div className={styles.address}>{submitter}</div>
-          <div>{moment.unix(timestamp).format('LLLL')}</div>
+          <div className={styles.detailItem}>
+            <span onClick={this.toggleDisplayDetail}>{displayDetail === 'submitter' ? submitter : moment.unix(timestamp).format('LLLL')}</span>
+          </div>
         </div>
       </div>
-    )
+    );
   }
 
   render() {
     const { text } = this.state;
 
     if (!text) {
-      return <LoadingView />
+      return <LoadingView />;
     }
 
     return (
