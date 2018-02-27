@@ -42,6 +42,9 @@
   word-wrap: break-word;
   width: 100%;
   text-align: center;
+}
+
+.detailItem span {
   cursor: pointer;
 }
 
