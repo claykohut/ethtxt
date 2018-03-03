@@ -15,7 +15,8 @@ class HomeRoute extends Component {
     this.state = {
       inputText: '',
       doingArchive: false,
-      showingWeb3Error: false,
+      showingError: false,
+      errorType: null,
     };
   }
 
@@ -25,31 +26,60 @@ class HomeRoute extends Component {
     });
   }
 
+  checkValidNetwork = (networkId) => {
+    const { web3 } = this.props;
+    return web3.expectedNetwork === networkId;
+  }
+
   doArchiveText = () => {
     const { inputText } = this.state;
     const { web3 } = this.props;
+
     if (inputText.length === 0) {
       return;
     }
     if (!web3.injected) {
       this.setState({
-        showingWeb3Error: true,
+        showingError: true,
+        errorType: 'inject-web3',
       });
       return;
     }
-    this.setState({
-      doingArchive: true,
-    });
-    this.props.archiveText(inputText)
-      .then((transactionHash) => {
-        this.props.history.push(`/receipt/${transactionHash}`);
-      })
-      .catch((err) => {
-        console.log('got error from archive...', err)
-      })
-      .finally(() => {
-        this.setState({ doingArchive: false });
+    web3.eth.getAccounts((err, accounts) => {
+      if (err || accounts.length === 0) {
+        this.setState({
+          showingError: true,
+          errorType: 'locked',
+        });
+        return;
+      }
+
+      console.log('get network?? ', web3)
+      web3.eth.net.getNetworkType((err, netId) => {
+        console.log('net id?? ', netId)
+        if (err || !this.checkValidNetwork(netId)) {
+          this.setState({
+            showingError: true,
+            errorType: 'wrong-network',
+          });
+          return;
+        }
+
+        this.setState({
+          doingArchive: true,
+        });
+        this.props.archiveText(inputText)
+          .then((transactionHash) => {
+            this.props.history.push(`/receipt/${transactionHash}`);
+          })
+          .catch((err) => {
+            console.log('got error from archive...', err);
+          })
+          .finally(() => {
+            this.setState({ doingArchive: false });
+          });
       });
+    });
   }
 
   handleKeyPress = (e) => {
@@ -58,17 +88,42 @@ class HomeRoute extends Component {
     }
   }
 
+  renderErrorText = () => {
+    const { errorType } = this.state;
+    const { web3 } = this.props;
+    switch (errorType) {
+      case 'inject-web3':
+        return <div>No injected web3 detected. You need to install something like <a className={styles.link} href="https://metamask.io/">metamask</a> to archive text on the Ethereum blockchain.</div>;
+      case 'locked':
+        return (
+          <div>
+            <div>Your injected ETH account seems to be locked.</div>
+            <div>Please unlock and try again.</div>
+          </div>
+        );
+      case 'wrong-network':
+        return (
+          <div>
+            <div>Your ETH wallet is connected to the wrong network.</div>
+            <div>Make sure your ETH provider (Metamask or otherwise) is connected to { web3.expectedNetwork } and try again.</div>
+          </div>
+        );
+      default:
+        return <div>Unknown error. Please try again later.</div>;
+    }
+  }
+
   render() {
-    const { inputText, doingArchive, showingWeb3Error } = this.state;
+    const { inputText, doingArchive, showingError } = this.state;
     const { web3 } = this.props;
     if (!web3 || !web3.initialized) {
-      return <LoadingView />
+      return <LoadingView />;
     }
-    if (showingWeb3Error) {
+    if (showingError) {
       return (
         <div className={styles.errorWrap}>
           <div className={styles.errorText}>
-            No injected web3 detected. You need to install something like <a className={styles.link} href="https://metamask.io/">metamask</a> to archive text on the Ethereum blockchain.
+            { this.renderErrorText() }
           </div>
           <Button
             text="Okay"

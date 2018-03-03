@@ -4,7 +4,7 @@ import { ETH_PROVIDER_URL, ETH_PROVIDER_URL_ROPSTEN } from 'constants';
 
 
 export function getProviderUrl() {
-  if (window.location.href.indexOf('ropsten.') !== -1 || window.location.href.indexOf('firebaseapp.') !== -1) {
+  if (window.location.href.indexOf('ropsten.') !== -1) {
     console.log('using ropsten!!');
     return ETH_PROVIDER_URL_ROPSTEN;
   }
@@ -24,8 +24,12 @@ const getWeb3 = new Promise(((resolve, reject) => {
       console.log('metamask web3 provider? ', web3.currentProvider);
       web3 = new Web3(web3.currentProvider);
 
+      const networkFallback = ETH_PROVIDER_URL.indexOf('127.') > -1 || ETH_PROVIDER_URL.indexOf('localhost') > -1 ? 'private' : 'main';
+      const expectedNetwork = window.location.href.indexOf('ropsten.') > -1 ? 'ropsten' : networkFallback;
+
       results = {
         web3,
+        expectedNetwork,
         injected: true,
       };
 

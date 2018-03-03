@@ -35,5 +35,6 @@
     "no-unused-vars": ["error", { "args": "none" } ],
     "max-len": "warn",
     "no-case-declarations": "off",
+    "no-shadow": "off",
   }
 }
