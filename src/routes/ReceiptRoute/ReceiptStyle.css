@@ -33,6 +33,10 @@
   margin: 0 0 20px;
 }
 
+.statusText > div {
+  margin: 10px 0;
+}
+
 .button {
   width: 160px;
   margin: 0 auto;

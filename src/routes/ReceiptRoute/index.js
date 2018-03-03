@@ -68,7 +68,6 @@ class ReceiptRoute extends Component {
         });
       })
       .catch(() => {
-        console.log('in error of checkTxReceipt ', this.state.status);
         if (!this.state.status) {
           this.setState({
             status: 'pending',
@@ -101,7 +100,16 @@ class ReceiptRoute extends Component {
     return (
       <div>
         <div className={`${styles.title} ${styles.titleError}`}>Transaction Error</div>
-        <div className={styles.statusText}>There was an error with your transaction. This often means you didn't provide enough gas for the ETH network to process your transaction.}</div>
+        <div className={styles.statusText}>
+          <div>There was an error with your transaction. This often means you didn't provide enough gas for the ETH network to process your transaction.</div>
+          <div>Please try again with a higher gas limit.</div>
+          <div>We recommend a minimum gas limit of 120k</div>
+        </div>
+        <Button
+          text="Go Back"
+          onClick={() => this.props.history.push('/')}
+          customStyle={styles.button}
+        />
       </div>
     );
   }
@@ -110,7 +118,7 @@ class ReceiptRoute extends Component {
     const { match: { params = {} } } = this.props;
     const { code, loading, showingError } = this.state;
 
-    if (true || showingError) {
+    if (showingError) {
       return this.renderError();
     }
 
