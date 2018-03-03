@@ -22,8 +22,8 @@ module.exports = {
     live:  {
        provider: new HDWalletProvider(mnemonic_live, "https://mainnet.infura.io/"+infura_apikey),
        network_id: 1,
-       gas:   2500000,
-       gasPrice: 3000000000 // 3 GWEI
+       gas:   1500000,
+       gasPrice: 2000000000 // 3 GWEI
     }
   }
 };
