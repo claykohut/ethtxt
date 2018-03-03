@@ -47,7 +47,7 @@ class ReceiptRoute extends Component {
   showErorr = (receipt) => {
     this.setState({
       showingError: true,
-    })
+    });
   }
 
   checkForTransactionReceipt = () => {
@@ -61,14 +61,14 @@ class ReceiptRoute extends Component {
           fromAddress: data.from,
         }, (receipt) => {
           if (receipt.status === 0 || receipt.status === '0x0') {
-            return this.showErorr(receipt)
+            return this.showErorr(receipt);
           }
           this.getTxReceiptData();
           this.intervalId = setInterval(this.getTxReceiptData, 2500);
         });
       })
       .catch(() => {
-        console.log('in error of checkTxReceipt ', this.state.status)
+        console.log('in error of checkTxReceipt ', this.state.status);
         if (!this.state.status) {
           this.setState({
             status: 'pending',
@@ -103,14 +103,14 @@ class ReceiptRoute extends Component {
         <div className={`${styles.title} ${styles.titleError}`}>Transaction Error</div>
         <div className={styles.statusText}>There was an error with your transaction. This often means you didn't provide enough gas for the ETH network to process your transaction.}</div>
       </div>
-    )
+    );
   }
 
   renderContent = () => {
     const { match: { params = {} } } = this.props;
     const { code, loading, showingError } = this.state;
 
-    if ( true || showingError) {
+    if (true || showingError) {
       return this.renderError();
     }
 
@@ -130,7 +130,7 @@ class ReceiptRoute extends Component {
           loading={loading}
         />
       </div>
-    )
+    );
   }
 
   render() {
