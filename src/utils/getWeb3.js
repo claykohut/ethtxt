@@ -1,12 +1,14 @@
 import Web3 from 'web3';
 
-import { ETH_PROVIDER_URL, ETH_PROVIDER_URL_ROPSTEN } from 'constants';
+import { ETH_PROVIDER_URL, ETH_PROVIDER_URL_PRIVATE, ETH_PROVIDER_URL_ROPSTEN } from 'constants';
 
 
 export function getProviderUrl() {
   if (window.location.href.indexOf('ropsten.') !== -1) {
-    console.log('using ropsten!!');
     return ETH_PROVIDER_URL_ROPSTEN;
+  }
+  if (window.location.href.indexOf('localhost') !== -1) {
+    return ETH_PROVIDER_URL_PRIVATE;
   }
   return ETH_PROVIDER_URL;
 }

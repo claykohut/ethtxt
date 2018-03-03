@@ -15,6 +15,7 @@ class ReceiptRoute extends Component {
       fromAddress: null,
       status: null,
       loading: true,
+      showingError: false,
     };
   }
 
@@ -45,6 +46,7 @@ class ReceiptRoute extends Component {
   }
 
   showErorr = (receipt) => {
+    console.log('setting showing error to true..')
     this.setState({
       showingError: true,
     });
@@ -53,16 +55,17 @@ class ReceiptRoute extends Component {
   checkForTransactionReceipt = () => {
     const { match: { params = {} } } = this.props;
     this.props.getTransactionReceipt({ tx: params.tx })
-      .then((data) => {
-        console.log('got response from receipt check? ', data);
+      .then((receipt) => {
         clearInterval(this.intervalId);
+
+        if (receipt.status === 0 || receipt.status === '0x0') {
+          return this.showErorr(receipt);
+        }
+
         this.setState({
-          blockNumber: data.blockNumber,
-          fromAddress: data.from,
-        }, (receipt) => {
-          if (receipt.status === 0 || receipt.status === '0x0') {
-            return this.showErorr(receipt);
-          }
+          blockNumber: receipt.blockNumber,
+          fromAddress: receipt.from,
+        }, () => {
           this.getTxReceiptData();
           this.intervalId = setInterval(this.getTxReceiptData, 2500);
         });
