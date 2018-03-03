@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import { getArchivedText } from 'reducers/archivedText/actions';
 
+import Logo from 'components/Logo';
 import LoadingView from 'components/LoadingView';
 
 import styles from 'routes/TextRoute/TextRouteStyle.css';
@@ -64,6 +65,10 @@ class TextRoute extends Component {
     );
   }
 
+  goHome = () => {
+    this.props.history.push('/');
+  }
+
   render() {
     const { text } = this.state;
 
@@ -73,6 +78,7 @@ class TextRoute extends Component {
 
     return (
       <div className={styles.textPageWrap}>
+        <Logo customStyle={styles.logo} onClick={this.goHome} />
         <div className={styles.archivedText}>{ text }</div>
         { this.renderDetails() }
       </div>

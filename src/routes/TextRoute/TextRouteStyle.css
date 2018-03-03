@@ -6,6 +6,13 @@
   align-items: center;
 }
 
+.logo {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  cursor: pointer;
+}
+
 .textWrap {
     width: 100%;
 }
