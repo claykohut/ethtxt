@@ -10,7 +10,7 @@
     width: 100%;
 }
 
-.featuredText {
+.archivedText {
   color: #4462CC;
   font-family: 'Lato', sans-serif;
   font-size: 36px;
@@ -49,7 +49,7 @@
 }
 
 @media screen and (max-width: 500px) {
-  .featuredText {
+  .archivedText {
     font-size: 24px;
   }
 }

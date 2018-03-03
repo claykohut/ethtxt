@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Button from 'components/Button';
 
-import { getTransactionReceipt, getReceiptData } from 'reducers/featuredText/actions';
+import { getTransactionReceipt, getReceiptData } from 'reducers/archivedText/actions';
 
 import styles from './ReceiptStyle.css';
 
@@ -44,6 +44,11 @@ class ReceiptRoute extends Component {
     return `https://${prefix}etherscan.io/tx/${params.tx}`;
   }
 
+  showErorr = (receipt) => {
+    this.setState({
+      showingError: true,
+    })
+  }
 
   checkForTransactionReceipt = () => {
     const { match: { params = {} } } = this.props;
@@ -54,12 +59,16 @@ class ReceiptRoute extends Component {
         this.setState({
           blockNumber: data.blockNumber,
           fromAddress: data.from,
-        }, () => {
+        }, (receipt) => {
+          if (receipt.status === 0 || receipt.status === '0x0') {
+            return this.showErorr(receipt)
+          }
           this.getTxReceiptData();
           this.intervalId = setInterval(this.getTxReceiptData, 2500);
         });
       })
       .catch(() => {
+        console.log('in error of checkTxReceipt ', this.state.status)
         if (!this.state.status) {
           this.setState({
             status: 'pending',
@@ -88,11 +97,25 @@ class ReceiptRoute extends Component {
       });
   }
 
-  render() {
-    const { match: { params = {} } } = this.props;
-    const { code, loading } = this.state;
+  renderError = () => {
     return (
-      <div className={styles.receiptWrap}>
+      <div>
+        <div className={`${styles.title} ${styles.titleError}`}>Transaction Error</div>
+        <div className={styles.statusText}>There was an error with your transaction. This often means you didn't provide enough gas for the ETH network to process your transaction.}</div>
+      </div>
+    )
+  }
+
+  renderContent = () => {
+    const { match: { params = {} } } = this.props;
+    const { code, loading, showingError } = this.state;
+
+    if ( true || showingError) {
+      return this.renderError();
+    }
+
+    return (
+      <div>
         <div className={styles.title}>Transaction Receipt</div>
         <a href={this.getEtherscanLink()} target="_blank" className={styles.transactionHash}>{params.tx}</a>
         <div className={styles.statusText}>{this.getStatusText()}</div>
@@ -106,6 +129,14 @@ class ReceiptRoute extends Component {
           customStyle={styles.button}
           loading={loading}
         />
+      </div>
+    )
+  }
+
+  render() {
+    return (
+      <div className={styles.receiptWrap}>
+        { this.renderContent() }
       </div>
     );
   }

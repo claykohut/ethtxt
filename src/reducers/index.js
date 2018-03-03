@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import web3 from 'reducers/web3';
-import featuredText from 'reducers/featuredText';
+import archivedText from 'reducers/archivedText';
 
 export default combineReducers({
   web3,
-  featuredText,
+  archivedText,
 });

@@ -24,6 +24,7 @@
     "react/prop-types": "off",
     "react/sort-comp": "off",
     "react/no-unused-state": "warn",
+    "react/no-unescaped-entities": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "linebreak-style": "off",
     "global-require": "off",

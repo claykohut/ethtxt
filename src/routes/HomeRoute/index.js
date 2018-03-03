@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { archiveText } from 'reducers/featuredText/actions';
+import { archiveText } from 'reducers/archivedText/actions';
 
 import Logo from 'components/Logo';
 import Button from 'components/Button';
@@ -160,7 +160,7 @@ class HomeRoute extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    featuredText: state.featuredText,
+    archivedText: state.archivedText,
     web3: state.web3,
   };
 };

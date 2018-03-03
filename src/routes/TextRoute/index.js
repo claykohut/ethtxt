@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import { getArchivedText } from 'reducers/featuredText/actions';
+import { getArchivedText } from 'reducers/archivedText/actions';
 
 import LoadingView from 'components/LoadingView';
 
@@ -73,7 +73,7 @@ class TextRoute extends Component {
 
     return (
       <div className={styles.textPageWrap}>
-        <div className={styles.featuredText}>{ text }</div>
+        <div className={styles.archivedText}>{ text }</div>
         { this.renderDetails() }
       </div>
     );
