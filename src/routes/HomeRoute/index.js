@@ -54,9 +54,7 @@ class HomeRoute extends Component {
         return;
       }
 
-      console.log('get network?? ', web3)
       web3.eth.net.getNetworkType((err, netId) => {
-        console.log('net id?? ', netId)
         if (err || !this.checkValidNetwork(netId)) {
           this.setState({
             showingError: true,
@@ -139,10 +137,11 @@ class HomeRoute extends Component {
         <div className={styles.inputWrap}>
           <input
             className={styles.input}
-            placeholder="New text here..."
+            placeholder="Text goes here. (140 char max)"
             value={inputText}
             onKeyPress={this.handleKeyPress}
             onChange={event => this.onChangeText(event.target.value)}
+            maxLength={140}
           />
           <div className={styles.belowInputWrap}>
             <Button

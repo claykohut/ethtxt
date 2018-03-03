@@ -106,7 +106,7 @@ class ReceiptRoute extends Component {
         <div className={styles.statusText}>
           <div>There was an error with your transaction. This often means you didn't provide enough gas for the ETH network to process your transaction.</div>
           <div>Please try again with a higher gas limit.</div>
-          <div>We recommend a minimum gas limit of 120k</div>
+          <div>We recommend a minimum gas limit of 250k. Usually, less gas will be used but more gas is needed for longer phrases.</div>
         </div>
         <Button
           text="Go Back"

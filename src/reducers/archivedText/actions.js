@@ -102,7 +102,7 @@ export function archiveText(text) {
         simpleStorage.deployed().then((instance) => {
           simpleStorageInstance = instance;
           dispatch({ type: SUBMIT_TEXT_START });
-          return simpleStorageInstance.archiveText(text, { from: accounts[0], gas: 120000, gasPrice: 4000000000 })
+          return simpleStorageInstance.archiveText(text, { from: accounts[0], gas: 250000, gasPrice: 4000000000 })
             .on('transactionHash', (hash) => {
               dispatch({ type: SUBMIT_TEXT_END });
               resolve(hash);
