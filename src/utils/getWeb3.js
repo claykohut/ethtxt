@@ -19,15 +19,15 @@ const getWeb3 = new Promise(((resolve, reject) => {
     let results;
     let { web3 } = window;
 
+    const networkFallback = ETH_PROVIDER_URL.indexOf('127.') > -1 || ETH_PROVIDER_URL.indexOf('localhost') > -1 ? 'private' : 'main';
+    const expectedNetwork = window.location.href.indexOf('ropsten.') > -1 ? 'ropsten' : networkFallback;
+
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
     if (typeof web3 !== 'undefined') {
       // Use Mist/MetaMask's provider.
 
       console.log('metamask web3 provider? ', web3.currentProvider);
       web3 = new Web3(web3.currentProvider);
-
-      const networkFallback = ETH_PROVIDER_URL.indexOf('127.') > -1 || ETH_PROVIDER_URL.indexOf('localhost') > -1 ? 'private' : 'main';
-      const expectedNetwork = window.location.href.indexOf('ropsten.') > -1 ? 'ropsten' : networkFallback;
 
       results = {
         web3,
@@ -48,6 +48,7 @@ const getWeb3 = new Promise(((resolve, reject) => {
 
       results = {
         web3,
+        expectedNetwork,
       };
 
       console.log('No web3 instance injected, using Local web3.');

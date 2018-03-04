@@ -1,3 +1,25 @@
+.topLinks {
+  position: absolute;
+  top: 15px;
+  right: 24px;
+}
+
+.topLinks > a {
+  text-decoration: none;
+  color: #4461cd;
+  font-size: 14px;
+}
+
+.topLinks > .seperator {
+  position: relative;
+  top: 2px;
+  background: #4461cd;
+  width: 2px;
+  height: 14px;
+  display: inline-block;
+  margin: 0 5px;
+}
+
 .inputWrap {
   display: flex;
   margin-top: 10px;
